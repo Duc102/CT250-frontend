@@ -1,0 +1,26 @@
+.header-content{
+    position: relative;
+    height: 50px;
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    background-color: black;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+}
+
+.title::after{
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background-color: #fff;
+    filter: blur(15px);
+}
+
+.title::before, .title::after {
+    background: linear-gradient(235deg, red, transparent, red);
+}

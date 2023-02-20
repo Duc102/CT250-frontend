@@ -1,0 +1,33 @@
+:root{
+    --black: black;
+    --dark: rgb(33,37,41);
+    --white: #fff;
+    --light: #f6f5ff;
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
+.product-contain header {
+    display:block;
+    height: 100px;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+}
+
+.product-contain header select {
+    padding: .375rem 2.25rem .375rem .75rem;
+    border-radius: 6px;
+}
+
+header .select {
+    background-color: orange;
+    padding: .375rem .375rem .375rem .375rem;
+   
+}
+
+option:focus {
+    background-color: var(--dark);
+}
