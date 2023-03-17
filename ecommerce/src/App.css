@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+* {
+  font-family: 'Poppins', sans-serif;
+}
+html{
+  font-size: 16px;
+  background-image: url("./Components/User/Images/CTU_Blank_white.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+body {
+  background-color: transparent;
+}
+
+#logo {
+  /* width: 75px; */
+  height: 75px;
+}
+
+@media screen and (max-width: 768px) {
+  #logo {
+    height: 50px;
+  }
+}
+
+
+
+header {
+  background-image: linear-gradient(#E8E9E9, white );
+}
+
+footer {
+  background-image: linear-gradient(white, #E8E9E9, #E8E9E9 );
+}
+
+.form-control:focus, .page-link:focus {
+  border: 1px solid black;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.pri {
+  color: white;
+}
+
+#login, #register {
+  color: black;
+}
+
+#login:focus, #register:focus {
+  color: white;
+}
+
+.nav-link {
+  color: black;
+  font-weight: bold;
+}
+
+.nav-pills .nav-link.active {
+  background-color: black;
+}
+.nav-link:focus{
+  color: gray;
+}
+
+.row {
+  --bs-gutter-x: 0rem;
+}
+
+.list-group-item{
+  background-color: transparent;
+  border: none;
+}
+
+/* img.brand:hover {
+  outline: 2px solid black ;
+} */
+
+.core, .ram {
+  border-radius: 35px;
+}
+.core:hover, .ram:hover {
+  outline: 2px solid black ;
+}
+
+.core img {
+  border-top-left-radius: 35px;
+  border-bottom-left-radius: 35px;
+}
+
+.list-group-item div {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 35px;
+  white-space: nowrap;
+}
+
+.list-group-item div:hover {
+  outline: 2px solid black ;;
+}
+
+@media screen and (max-width: 768px) {
+  
+}
+
+.ta-menu  {
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  overflow: scroll;
+  white-space: nowrap;
+}
+.ta-menu::-webkit-scrollbar{
+  display: none;
+}
+
+.carousel-indicators{
+  margin-bottom: 0px;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.ta-menu {
+  position: relative;
+}
