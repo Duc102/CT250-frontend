@@ -158,7 +158,6 @@ export default function AddProductComponent() {
         let result = list.filter((proIt) => proIt.id === id);
         result = result[0];
         let index = list.indexOf(result);
-        console.log(conditions);
         result.conditions = conditions;
         list[index] = result;
         setProductItems([...list]);
@@ -189,7 +188,6 @@ export default function AddProductComponent() {
                 if(op.insert?.image){
                     let url = op.insert.image;
                     url = url.replaceAll("/0/", "/"+productId+"/");
-                    console.log("This is url",url);
                     op.insert.image = url;
                 }
             })
@@ -278,8 +276,10 @@ export default function AddProductComponent() {
     return (
         <div>
             <ContentEditable html={product?.name} tagName='h2' onChange={setProductName}></ContentEditable>
-            <Category title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
-            <button onClick={addNewProductItem}>New Product Item</button>
+            <div className='category d-flex flex-wrap'>
+                <Category title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
+            </div>
+            
             {
                 productItems.map((proIt, index) => {
                     return (
@@ -311,6 +311,7 @@ export default function AddProductComponent() {
                     )
                 })
             }
+            <button onClick={addNewProductItem}>New Product Item</button>
             <div className='description'>
                 <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>

@@ -3,6 +3,8 @@ import { useState, memo, useEffect, useRef } from 'react';
 import ProductCategoryService from '../../../Services/CommonService/ProductCategoryService';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 
+import "./Category.css";
+
 const Category = (props) => {
     const [parent, setParent] = useState(props.parent);
     const [selected, setSelected] = useState(0);

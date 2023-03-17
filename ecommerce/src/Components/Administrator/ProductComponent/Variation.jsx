@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect, memo } from 'react';
 import ProductService from '../../../Services/CommonService/ProductService';
 import VariationService from '../../../Services/CommonService/VariationService';
+import "./Variation.css"
 
 const Variation = (props) => {
   const [categoryId, setCategoryId] = useState(props.categoryId);
@@ -50,7 +51,7 @@ const Variation = (props) => {
 
   if(variations.length > 0)
     return (
-      <div className='d-flex flex-wrap'>
+      <div className='variation d-flex flex-wrap'>
       {
           variations.map((variation, index)=>
             <div className='select d-flex align-items-center white' key={index}><span className='variation-title'> {variation.name} </span>
