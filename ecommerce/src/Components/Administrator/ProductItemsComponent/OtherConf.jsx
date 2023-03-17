@@ -24,7 +24,7 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
       }
       return(
         <>
-          <img src={props.productItem.productImage} width="200px" onClick={goToTheProductItem}></img>
+          <img src={props.productItem.productImages[0].url} alt={"Product Item"} width="200px" onClick={goToTheProductItem}></img>
         </>
       )
     }

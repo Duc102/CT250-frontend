@@ -136,7 +136,7 @@ export default function ProductItem(props) {
         <div>
             <div className='product-list-info m-auto'>
                 <div style={{textAlign: "center", background: "white"}}>
-                    <img src={productItem.productImage} className="product-image" onClick={goToDetail}></img>
+                    <img src={productItem.productImages[0].url} alt="Product Image" className="product-image" onClick={goToDetail}></img>
                 </div>
                 <div style={{minHeight: "150px"}} className="product-text">
                     <div className="product-name">{product.name} <span>{productItem.productConfigurations?.map((config, index)=><Config key={index} value={config.variationOption.value} varOpId={config.variationOption.id}></Config>)}</span></div>

@@ -12,7 +12,7 @@ import ProductService from '../../../Services/CommonService/ProductService';
 import EditIcon from '@mui/icons-material/Edit';
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
 import VariationService from '../../../Services/CommonService/VariationService';
-import {findVariationOptionFromVariations} from "../ProductItemsComponent/Execute"
+import { findVariationOptionFromVariations } from "../ProductItemsComponent/Execute"
 export default function AddProductComponent() {
     const [zeroCategory, setZeroCategory] = useState([]);
     const [category, setCategory] = useState(0);
@@ -58,9 +58,9 @@ export default function AddProductComponent() {
         });
     }, []);
 
-    useEffect(()=>{
-        if(category)
-            VariationService.getVariationAlongCategoryId(category).then((response)=>{
+    useEffect(() => {
+        if (category)
+            VariationService.getVariationAlongCategoryId(category).then((response) => {
                 let tmpVar = response.data;
                 setVariationOfCategory(tmpVar);
             })
@@ -164,23 +164,37 @@ export default function AddProductComponent() {
         setProductItems([...list]);
     }
 
-    function preprocessConfig(conditions){
+    function preprocessConfig(conditions) {
         let newConfig = [];
         // Keys are id of variation of the product item
         let keys = Object.keys(conditions);
         keys.forEach(key => {
-          // Value of key is id of variation option
-          let varOp = conditions[key];
-          // Get object variation option from the variation option id.
-          let vo = findVariationOptionFromVariations(varOp, variationOfCategory.filter(i => Number(i.id) === Number(key)).at(0));
-          // Formate config form variation option.
-          let objvo ={};
-          objvo["id"] = "0";
-          objvo["variationOption"] = vo;
-          newConfig.push(objvo);
+            // Value of key is id of variation option
+            let varOp = conditions[key];
+            // Get object variation option from the variation option id.
+            let vo = findVariationOptionFromVariations(varOp, variationOfCategory.filter(i => Number(i.id) === Number(key)).at(0));
+            // Formate config form variation option.
+            let objvo = {};
+            objvo["id"] = "0";
+            objvo["variationOption"] = vo;
+            newConfig.push(objvo);
         });
         return newConfig;
-      }
+    }
+
+    function preprocessDescription(productId){
+        if (description) {
+            let ops = description.ops;
+            ops.forEach(op => {
+                if(op.insert?.image){
+                    let url = op.insert.image;
+                    url = url.replaceAll("/0/", "/"+productId+"/");
+                    console.log("This is url",url);
+                    op.insert.image = url;
+                }
+            })
+        }
+    }
 
     function setNewImages(id, newImages) {
         let list = productItems;
@@ -244,15 +258,18 @@ export default function AddProductComponent() {
         }
         ProductService.createProduct(newProduct).then((response) => {
             let createdProduct = response.data;
-            console.log("Product", createdProduct);
+            preprocessDescription(createdProduct.id);
+            UploadFileService.uploadJsonFile("description.json","/Products/Descriptions/"+createdProduct.id,description).then(response => {
+                console.log("This is description: ",response.data);
+            });
             ProductService.createProductItem(createdProduct.id, productItems).then(response => {
                 let createdProductItems = response.data;
                 let preProIts = preprocessUpdate(createdProduct, productItems, createdProductItems);
-                for(let i =0; i< preProIts.length; i++){
+                for (let i = 0; i < preProIts.length; i++) {
                     createdProductItems[i].productImages = preProIts[i].existedImages;
                     createdProductItems[i].productConfigurations = preProIts[i].productConfigurations;
                 }
-                ProductService.updateProductImagesNewProductItem(createdProductItems).then(response=>{
+                ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
                     console.log("Full image", response.data);
                 })
             })
@@ -295,7 +312,7 @@ export default function AddProductComponent() {
                 })
             }
             <div className='description'>
-                {/* <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} /> */}
+                <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>
             <button onClick={save}>Save</button>
         </div>
