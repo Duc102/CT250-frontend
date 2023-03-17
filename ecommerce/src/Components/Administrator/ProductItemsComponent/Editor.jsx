@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useRef, memo} from 'react';
+import { useState, useEffect, useRef, memo} from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { useQuill } from 'react-quilljs';
 import "./Style.css";
@@ -9,6 +9,8 @@ import UploadFileService from '../../../Services/CommonService/UploadFileService
 function Editor(props) {
     const {quill, quillRef} = useQuill();
     let autoEdit = useRef(true);
+    const id = useRef(0);
+
     useEffect(()=>{
         if(quill){
             quill.on("editor-change",(delta, oldDelta, source)=>{
@@ -29,17 +31,16 @@ function Editor(props) {
 
     useEffect(() => {
         if(props.product?.id){
-            console.log("Response");
             UploadFileService.readProductDescriptionsFile(props.product.id).then(response=>{
                 props.setDescription(response.data);
-                console.log("Response");
-                console.log(response.data);
                 if(quill){
                     quill.setContents(response.data);
                     autoEdit.current = true;
                     props.offModifyMode();
-                }     
-            })}
+                    quill.getModule('toolbar').addHandler('image', selectLocalImage);
+                } 
+            });
+        }
     }, [props.product, props.reset]);
 
 
@@ -54,7 +55,7 @@ function Editor(props) {
         });
     }
 
-    function onInsertImage(input) {
+    function onInsertImage(input){
         const file = input.files[0];
         var newImage = {};
         newImage["name"] = "Description" + new Date().getTime(); // set name of a new image.
@@ -74,7 +75,7 @@ function Editor(props) {
         input.onchange = () => {
             onInsertImage(input);
         }
-
+        
     }
     
     return (

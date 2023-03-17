@@ -13,6 +13,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
 import VariationService from '../../../Services/CommonService/VariationService';
 import { findVariationOptionFromVariations } from "../ProductItemsComponent/Execute"
+
+import "./AddProductComponent.css"
 export default function AddProductComponent() {
     const [zeroCategory, setZeroCategory] = useState([]);
     const [category, setCategory] = useState(0);
@@ -279,6 +281,8 @@ export default function AddProductComponent() {
             <div className='category d-flex flex-wrap'>
                 <Category title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
             </div>
+
+            <div className = "section-line" style={{color: 'black'}}> VARIATION </div>
             
             {
                 productItems.map((proIt, index) => {
@@ -286,15 +290,25 @@ export default function AddProductComponent() {
                         <div key={index}>
                             <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)}></Variation>
                             <div className="product-modify">
-                                <div className='d-flex' style={{ alignItems: "center" }}>
-                                    <span>Price</span>
-                                    <input id={"new-product-price-" + proIt.id} type="number" onChange={() => setPrice(proIt.id)}></input>
+                                <div className='price d-flex flex-wrap' style={{ alignItems: "center" }}>
+                                    <div style={{flexGrow: 1, marginRight: "10px"}}>
+                                        <div>Price</div>
+                                        <input style={{width: "100%"}} id={"new-product-price-" + proIt.id} type="number" onChange={() => setPrice(proIt.id)}></input>
+                                    </div>
+                                    <div style={{flexGrow: 1}}>
+
+                                        <div>SKU</div>
+                                        <input style={{width: "100%"}} id={"new-product-ksu-" + proIt.id} onChange={() => setKSU(proIt.id)}></input>
+                                        
+                                    </div>
+
+                                    
                                     {/* <span className={priceSpanClass}>{Intl.NumberFormat('vi-VN', { style: "currency", currency: "VND" }).format(proIt.price)}</span> */}
                                 </div>
-                                <div className='ksu'>
-                                    <span>SKU</span>
+                                {/* <div className='ksu d-flex align-items-center'>
+                                    <div>SKU</div>
                                     <input id={"new-product-ksu-" + proIt.id} onChange={() => setKSU(proIt.id)}></input>
-                                </div>
+                                </div> */}
                                 <div className='d-flex mt-1 justify-content-center'>
                                     <button className="btn btn-light qty" style={{ margin: "3px", width: "40px" }} onClick={() => setQtyInStock(proIt.id, 1)}>+</button>
                                     <div className='qty-input'>
@@ -311,11 +325,14 @@ export default function AddProductComponent() {
                     )
                 })
             }
-            <button onClick={addNewProductItem}>New Product Item</button>
+            <div style={{margin: "10px", marginLeft: "0px"}}>
+                <button className='btn btn-dark' onClick={addNewProductItem}>New Configuration</button>
+            </div>
+            <div className = "section-line" style={{color: 'black'}}> DESCRIPTION </div>
             <div className='description'>
                 <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>
-            <button onClick={save}>Save</button>
+            <button className='btn btn-success' onClick={save}>Save</button>
         </div>
     )
 }
