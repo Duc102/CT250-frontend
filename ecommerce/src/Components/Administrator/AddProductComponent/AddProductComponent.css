@@ -1,7 +1,26 @@
 input {
-    padding: .375rem .375rem .375rem .375rem;
+    padding: .375rem 0.275rem .375rem .75rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    border-radius: 6px;
+    border: none;
+}
+input:focus{
+    outline: none;
+}
+
+.new-price, .new-sku {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 0.375rem 0.375rem 0.375rem 0.375rem;
     margin: 3px;
     flex-grow: 1;
     flex-basis: 0;
     border-radius: 6px;
+}
+
+.new-price:hover, .new-sku:hover {
+    outline: 1px solid red;
+    box-shadow: 0px 0px 9px red;
 }

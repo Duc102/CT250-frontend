@@ -9,6 +9,7 @@ import ProductImage from '../ProductItemsComponent/ProductImage';
 import Editor from '../ProductItemsComponent/Editor';
 import ProductService from '../../../Services/CommonService/ProductService';
 
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
 import VariationService from '../../../Services/CommonService/VariationService';
@@ -183,13 +184,13 @@ export default function AddProductComponent() {
         return newConfig;
     }
 
-    function preprocessDescription(productId){
+    function preprocessDescription(productId) {
         if (description) {
             let ops = description.ops;
             ops.forEach(op => {
-                if(op.insert?.image){
+                if (op.insert?.image) {
                     let url = op.insert.image;
-                    url = url.replaceAll("/0/", "/"+productId+"/");
+                    url = url.replaceAll("/0/", "/" + productId + "/");
                     op.insert.image = url;
                 }
             })
@@ -259,8 +260,8 @@ export default function AddProductComponent() {
         ProductService.createProduct(newProduct).then((response) => {
             let createdProduct = response.data;
             preprocessDescription(createdProduct.id);
-            UploadFileService.uploadJsonFile("description.json","/Products/Descriptions/"+createdProduct.id,description).then(response => {
-                console.log("This is description: ",response.data);
+            UploadFileService.uploadJsonFile("description.json", "/Products/Descriptions/" + createdProduct.id, description).then(response => {
+                console.log("This is description: ", response.data);
             });
             ProductService.createProductItem(createdProduct.id, productItems).then(response => {
                 let createdProductItems = response.data;
@@ -276,59 +277,59 @@ export default function AddProductComponent() {
         });
     }
     return (
-        <div>
-            <ContentEditable html={product?.name} tagName='h2' onChange={setProductName}></ContentEditable>
+        <div className='main-content'>
+            {/* <ContentEditable html={product?.name} tagName='h2' onChange={setProductName}></ContentEditable> */}
+            <div className='model-name-container'>
+                <h1 className='product-name-detail'>
+                    <ContentEditable html={product?.name} tagName='span' onChange={setProductName}></ContentEditable>
+                </h1>
+            </div>
+            <div className="section-line"> CATEGORY </div>
             <div className='category d-flex flex-wrap'>
                 <Category title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
             </div>
 
-            <div className = "section-line" style={{color: 'black'}}> VARIATION </div>
-            
+            <div className="section-line"> VARIATIONS </div>
+
             {
                 productItems.map((proIt, index) => {
                     return (
                         <div key={index}>
+                            <h2 style={{backgroundColor: "white", display:"inline-block"}}>Product Item: {index+1}</h2>
                             <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)}></Variation>
                             <div className="product-modify">
                                 <div className='price d-flex flex-wrap' style={{ alignItems: "center" }}>
-                                    <div style={{flexGrow: 1, marginRight: "10px"}}>
-                                        <div>Price</div>
-                                        <input style={{width: "100%"}} id={"new-product-price-" + proIt.id} type="number" onChange={() => setPrice(proIt.id)}></input>
+                                    <div className='new-price'>
+                                        <span className="price-title">Price</span>
+                                        <input id={"new-product-price-" + proIt.id} type="number" onChange={() => setPrice(proIt.id)} placeholder="1.000"></input>
+                                        <span className="price-title">$</span>
                                     </div>
-                                    <div style={{flexGrow: 1}}>
+                                    <div className='new-sku'>
+                                        <span className="sku-title">SKU</span>
+                                        <input id={"new-product-ksu-" + proIt.id} onChange={() => setKSU(proIt.id)} placeholder="SKU0001"></input>
 
-                                        <div>SKU</div>
-                                        <input style={{width: "100%"}} id={"new-product-ksu-" + proIt.id} onChange={() => setKSU(proIt.id)}></input>
-                                        
                                     </div>
-
-                                    
-                                    {/* <span className={priceSpanClass}>{Intl.NumberFormat('vi-VN', { style: "currency", currency: "VND" }).format(proIt.price)}</span> */}
                                 </div>
-                                {/* <div className='ksu d-flex align-items-center'>
-                                    <div>SKU</div>
-                                    <input id={"new-product-ksu-" + proIt.id} onChange={() => setKSU(proIt.id)}></input>
-                                </div> */}
-                                <div className='d-flex mt-1 justify-content-center'>
+                                <div className='d-flex justify-content-center'>
                                     <button className="btn btn-light qty" style={{ margin: "3px", width: "40px" }} onClick={() => setQtyInStock(proIt.id, 1)}>+</button>
                                     <div className='qty-input'>
-                                        <input id={"new-product-qty-" + proIt.id} type="number" min={0} value={proIt.qtyInStock} className='form-control' onChange={() => typeQtyInStock(proIt.id)}></input>
+                                        <input id={"new-product-qty-" + proIt.id} type="number" min={0} value={proIt.qtyInStock} className='form-control' onChange={() => typeQtyInStock(proIt.id)} placeholder="Quanlity In Stock"></input>
                                     </div>
                                     <button className='btn btn-light qty' style={{ margin: "3px", width: "40px" }} onClick={() => setQtyInStock(proIt.id, -1)}>-</button>
                                 </div>
-                            </div>
-                            <div className='product-image'>
-                                <ProductImage product={product} productItem={proIt} imagesList={proIt.existedImages} setImagesList={(existedImages) => setExistedImages(proIt.id, existedImages)} newImages={proIt.newImages} setNewImages={(newImages) => setNewImages(proIt.id, newImages)} onModify={onModifyMode} offModifyMode={offModifyMode} />
-                            </div>
 
+                                <div className='product-image' style={{margin: "3px"}}>
+                                    <ProductImage product={product} productItem={proIt} imagesList={proIt.existedImages} setImagesList={(existedImages) => setExistedImages(proIt.id, existedImages)} newImages={proIt.newImages} setNewImages={(newImages) => setNewImages(proIt.id, newImages)} onModify={onModifyMode} offModifyMode={offModifyMode} />
+                                </div>
+                            </div>
                         </div>
                     )
                 })
             }
-            <div style={{margin: "10px", marginLeft: "0px"}}>
-                <button className='btn btn-dark' onClick={addNewProductItem}>New Configuration</button>
+            <div style={{ margin: "10px", marginLeft: "3px" }}>
+                <button className='btn btn-light ps-0' onClick={addNewProductItem}> <span style={{padding: "5px"}}><AddCircleIcon/></span> New Variation </button>
             </div>
-            <div className = "section-line" style={{color: 'black'}}> DESCRIPTION </div>
+            <div className="section-line"> DESCRIPTION </div>
             <div className='description'>
                 <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>

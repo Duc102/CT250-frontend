@@ -143,9 +143,11 @@ export default function ProductItem(props) {
                     <div className='quick-change'>
                         <div className='d-flex' style={{alignItems: "center"}}><input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={changePriceInputClass} value={price}></input> <span className={priceSpanClass}>{Intl.NumberFormat('vi-VN', {style: "currency", currency: "VND"}).format(price)}</span> <button className='btn btn-light ms-2' style={{width: "41px", height: "37px", padding: "0px"}} onClick={changePriceInputClass}><EditIcon className="edit-button"/></button></div>
                         <div className='d-flex mt-1'>
-                            <button className="btn btn-light" onClick={()=>changeQtyInStock(1)}>+</button>
-                            <input type="number" min={0} ref={qty} className='form-control ms-1 me-1' onChange={typeQtyInStock} value={qtyInStock}></input>
-                            <button className='btn btn-light' onClick={()=>changeQtyInStock(-1)}>-</button>
+                            <button className="btn btn-light" style={{marginTop: "3px", marginBottom: "3px"}} onClick={()=>changeQtyInStock(1)}>+</button>
+                            <div className='qty-input'>
+                                <input type="number" min={0} ref={qty} className='form-control' onChange={typeQtyInStock} value={qtyInStock}></input>
+                            </div>
+                            <button className='btn btn-light' style={{marginTop: "3px", marginBottom: "3px"}} onClick={()=>changeQtyInStock(-1)}>-</button>
                         </div>
                     </div>
                 </div>
