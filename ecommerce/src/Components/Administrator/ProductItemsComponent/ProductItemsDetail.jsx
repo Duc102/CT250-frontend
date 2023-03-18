@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 import 'react-quill/dist/quill.snow.css';
 
@@ -42,6 +42,7 @@ export default function ProductItemsDetail() {
   const [price, setPrice] = useState(0);
   const [qtyInStock, setQtyInStock] = useState(0);
 
+  const navigate = useNavigate();
 
   useEffect(()=>{
     let product, productItem;
@@ -279,7 +280,9 @@ function save(){
 
 // Delete a product
 function quickDelete(){
-    ProductService.deleteProductItem(productItem.id);
+    ProductService.deleteProductItem(productItem.id).then((response)=>{
+        navigate("/administrator/products");
+    });
 }
 
 // Show/hide input price 
@@ -358,7 +361,7 @@ function offModifyMode(){
 
       <div className='commit d-flex'>
         <div>
-          <button className='btn btn-danger flex-grow-1 m-1 ms-0' onClick={quickDelete} disabled>Delete</button>
+          <button className='btn btn-danger flex-grow-1 m-1 ms-0' onClick={quickDelete}>Delete</button>
           <button className='btn btn-dark border border-danger flex-grow-1 m-1' onClick={save} disabled={modifyMode}>Save</button>
           <button className='btn btn-dark border border-danger flex-grow-1 m-1 me-0' onClick={cancel} disabled={modifyMode}>Cancel</button>
         </div>

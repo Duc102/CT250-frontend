@@ -71,7 +71,10 @@ export default function ProductItem(props) {
     }
     // Delete a product
     function quickDelete(){
-        ProductService.deleteProductItem(productItem.id);
+        ProductService.deleteProductItem(productItem.id).then((response)=>{
+            let track = new Date();
+            props.refresh(track.getTime());
+        });
     }
 
     // Show/hide input price 

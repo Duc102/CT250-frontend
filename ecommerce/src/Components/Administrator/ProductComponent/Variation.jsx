@@ -56,7 +56,9 @@ const Variation = (props) => {
           variations.map((variation, index)=>
             <div className='select d-flex align-items-center white' key={index}><span className='variation-title'> {variation.name} </span>
               <select id={props.goal+"-"+variation.id} onChange={selectVariation}>
-                <option value={0}>All</option>
+                {
+                  props.goal.includes("new")||props.goal.includes("modify")?<option value={0}>No</option>:<option value={0}>All</option>
+                }
                 {
                   variation.variationOption?.map((varOp, index)=><option key={index} value={varOp.id}>{varOp.value}</option>)
                 }

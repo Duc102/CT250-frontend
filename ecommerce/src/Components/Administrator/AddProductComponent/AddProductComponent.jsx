@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import ContentEditable from 'react-contenteditable';
+import { useNavigate } from 'react-router-dom';
 
 import Category from '../ProductComponent/Category';
 import Variation from '../ProductComponent/Variation';
@@ -49,17 +50,42 @@ export default function AddProductComponent() {
     const [priceInputClass, setPriceInputClass] = useState('form-control price-lg-detail close-price-input');
     const [priceSpanClass, setPriceSpanClass] = useState('form-control price-lg-detail');
 
+    function refresh() {
+        setCategory(0);
+        setVariationOfCategory([]);
+        setProduct({ id: 0, name: "New Product Name" });
+        setNumberProIt(1);
+        fakeProId.current = 0;
+        setProductItems(() => {
+            let list = [];
+            for (let i = 0; i < 1; i++) {
+                list.push({
+                    id: 0,
+                    price: 0,
+                    sku: "KSU0000001",
+                    qtyInStock: 0,
+                    conditions: {},
+                    productConfigurations: [],
+                    existedImages: [],
+                    newImages: []
+                });
+                fakeProId.current = fakeProId.current + 1;
+            }
+            return list;
+        });
+    }
+
     useEffect(() => {
         ProductCategoryService.getProductCategoryZeroLevel().then((response) => {
             if (response.data.length > 0) {
-                let data = [{ id: 0, categoryName: "All" }];
+                let data = [{ id: 0, categoryName: "No" }];
                 response.data.forEach(element => {
                     data.push(element);
                 });
                 setZeroCategory(data);
             }
         });
-    }, []);
+    }, [reset]);
 
     useEffect(() => {
         if (category)
@@ -271,10 +297,20 @@ export default function AddProductComponent() {
                     createdProductItems[i].productConfigurations = preProIts[i].productConfigurations;
                 }
                 ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
-                    console.log("Full image", response.data);
+                    let first = response.data[0].id;
+                    navigate("/administrator/products/productItemsDetail/"+first);
                 })
             })
         });
+    }
+    const modifyMode = false;
+
+    const navigate = useNavigate();
+
+    function cancel() {
+        let track = new Date();
+        setReset(track.getTime());
+        refresh();
     }
     return (
         <div className='main-content'>
@@ -286,7 +322,7 @@ export default function AddProductComponent() {
             </div>
             <div className="section-line"> CATEGORY </div>
             <div className='category d-flex flex-wrap'>
-                <Category title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
+                <Category goal="new-product" title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
             </div>
 
             <div className="section-line"> VARIATIONS </div>
@@ -295,7 +331,7 @@ export default function AddProductComponent() {
                 productItems.map((proIt, index) => {
                     return (
                         <div key={index}>
-                            <h2 style={{backgroundColor: "white", display:"inline-block"}}>Product Item: {index+1}</h2>
+                            <h3 className="label-product-item">Product Item: {index + 1}</h3>
                             <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)}></Variation>
                             <div className="product-modify">
                                 <div className='price d-flex flex-wrap' style={{ alignItems: "center" }}>
@@ -318,7 +354,7 @@ export default function AddProductComponent() {
                                     <button className='btn btn-light qty' style={{ margin: "3px", width: "40px" }} onClick={() => setQtyInStock(proIt.id, -1)}>-</button>
                                 </div>
 
-                                <div className='product-image' style={{margin: "3px"}}>
+                                <div className='product-image' style={{ margin: "3px" }}>
                                     <ProductImage product={product} productItem={proIt} imagesList={proIt.existedImages} setImagesList={(existedImages) => setExistedImages(proIt.id, existedImages)} newImages={proIt.newImages} setNewImages={(newImages) => setNewImages(proIt.id, newImages)} onModify={onModifyMode} offModifyMode={offModifyMode} />
                                 </div>
                             </div>
@@ -327,13 +363,18 @@ export default function AddProductComponent() {
                 })
             }
             <div style={{ margin: "10px", marginLeft: "3px" }}>
-                <button className='btn btn-light ps-0' onClick={addNewProductItem}> <span style={{padding: "5px"}}><AddCircleIcon/></span> New Variation </button>
+                <button className='btn btn-light ps-0' onClick={addNewProductItem}> <span style={{ padding: "5px" }}><AddCircleIcon /></span> New Variation </button>
             </div>
             <div className="section-line"> DESCRIPTION </div>
             <div className='description'>
                 <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>
-            <button className='btn btn-success' onClick={save}>Save</button>
+            <div className='commit d-flex'>
+                <div>
+                    <button className='btn btn-dark border border-danger flex-grow-1 m-1' onClick={save} disabled={modifyMode}>Save</button>
+                    <button className='btn btn-dark border border-danger flex-grow-1 m-1 me-0' onClick={cancel} disabled={modifyMode}>Cancel</button>
+                </div>
+            </div>
         </div>
     )
 }

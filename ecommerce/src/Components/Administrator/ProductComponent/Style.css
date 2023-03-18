@@ -61,6 +61,7 @@ option:focus {
 .product-list-info .product-name {
     overflow: hidden;
     font-size: 20px;
+    height: 60px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;

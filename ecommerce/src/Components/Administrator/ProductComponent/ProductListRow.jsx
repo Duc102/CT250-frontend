@@ -6,7 +6,7 @@ import ProductItem from "./ProductItem";
 
 const ProductListRow = (props) => {
     const [products, setProducts] = useState([]);
-    
+    const [haveChange, setHaveChange] = useState(0);
     useEffect(()=>{
         let productList = [];
         let categoryId = parseInt(props.value);
@@ -27,7 +27,7 @@ const ProductListRow = (props) => {
                 setProducts(productList);
             })
         }
-    },[props])
+    },[props, haveChange])
     return (
         <div className="row justify-content-center">
         {
@@ -35,7 +35,7 @@ const ProductListRow = (props) => {
             products.map((product, index)=>{
                 return (
                 <div key={index} className="col-sm-6 col-lg-4 p-1" style={{minWidth: "310px"}}>
-                    <ProductItem productItem={product}></ProductItem>
+                    <ProductItem productItem={product} refresh={setHaveChange}></ProductItem>
                 </div>
                 )
             })

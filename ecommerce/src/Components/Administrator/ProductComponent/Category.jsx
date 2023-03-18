@@ -15,7 +15,11 @@ const Category = (props) => {
     useEffect(() => {
         ProductCategoryService.getChildrenOfProductCategory(selected).then((response) => {
             if (response.data.length > 0) {
-                let data = [{id: 0, categoryName: "All"}];
+                let data = [];
+                if(props.goal.includes("new"))
+                    data.push({id: 0, categoryName: "No"});
+                else 
+                data.push({id: 0, categoryName: "All"});
                 response.data.forEach(element => {
                     data.push(element);
                 });
@@ -56,7 +60,7 @@ const Category = (props) => {
                 {
                     children.length > 0
                     ?
-                    <Category title="Sub-Category" data={children} parent={selected} setCategoryId={props.setCategoryId}></Category>
+                    <Category goal={props.goal} title="Sub-Category" data={children} parent={selected} setCategoryId={props.setCategoryId}></Category>
                     : (<></>)
                 }
             </>

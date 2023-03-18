@@ -30,7 +30,7 @@ export default function ProductsComponent() {
         <div className='product-contain'>
             <header>
                 <div className='category d-flex flex-wrap'>
-                    <Category title="Category" data={data} parent={0} setCategoryId={setCategoryId}></Category>
+                    <Category goal="filter" title="Category" data={data} parent={0} setCategoryId={setCategoryId}></Category>
                 </div>
                 <Variation goal="get-variations" categoryId={categoryId} setConditions={setConditions}></Variation>
             </header>
