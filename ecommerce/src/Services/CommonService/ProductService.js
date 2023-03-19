@@ -53,7 +53,6 @@ class ProductService {
     }
 
     updateProductItemDetail(productItem){
-        console.log(productItem);
         return axios.put(PRODUCT_BASE_URL + "/productItemDetail/update/" + productItem.id, productItem);
     }
 

@@ -86,7 +86,7 @@ export default function AdminSidbar() {
                 </li>
               </NavLink>
 
-              <NavLink to="/administrator">
+              <NavLink to="/administrator/orders">
                 <li className={'nav-link ' + menuData.Orders} onClick={()=>activeLink("Orders")}>
                 <Order className="icon"/>
                 <span className="text">Orders</span>
