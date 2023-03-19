@@ -309,12 +309,17 @@ useEffect(()=>{
 
 // Change price of a product when type from the keyboard
 function changePrice(){
-    let number = parseInt(pri.current.value);
-    if(isNaN(number))
-        setPrice(0);
-    else {
-        setPrice(number);
-    }
+    let number = pri.current.value;
+    setPrice(number);
+}
+
+function finishChange(){
+  let number = parseFloat(pri.current.value);
+  if(isNaN(number))
+    setPrice(0);
+  else {
+    setPrice(number);
+  }
 }
 
 function onModifyMode(){
@@ -338,8 +343,8 @@ function offModifyMode(){
           </div>
           <div className="product-modify">
             <div className='d-flex' style={{alignItems: "center"}}>
-              <input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={changePriceInputClass} value={price}></input> 
-              <span className={priceSpanClass}>{Intl.NumberFormat('vi-VN', {style: "currency", currency: "VND"}).format(price)}</span> 
+              <input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={()=>{changePriceInputClass(); finishChange()}} value={price}></input> 
+              <span className={priceSpanClass}>{Intl.NumberFormat('en-US', {style: "currency", currency: "USD"}).format(price)}</span> 
               <button className='btn btn-light edit ms-2' style={{marginRight: "3px", width: "41px", height: "37px", padding: "0px"}} onClick={changePriceInputClass}><EditIcon className="edit-button"/></button>
             </div>
             <div className='d-flex mt-1 justify-content-center'>

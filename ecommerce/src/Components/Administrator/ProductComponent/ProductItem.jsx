@@ -25,7 +25,9 @@ export default function ProductItem(props) {
 
     // Get list of products when input data changed.
     useEffect(()=>{
-        setProductItem(props.productItem);
+        setProductItem({...props.productItem});
+        setPrice(props.productItem.price);
+        setQtyInStock(props.productItem.qtyInStock);
         ProductService.getProductByProductItemId(props.productItem.id).then((response)=>{
             setProduct(response.data);
         })
@@ -101,12 +103,17 @@ export default function ProductItem(props) {
 
     // Change price of a product when type from the keyboard
     function changePrice(){
-        let number = parseInt(pri.current.value);
-        if(isNaN(number))
-            setPrice(0);
-        else {
-            setPrice(number);
-        }
+        let number = pri.current.value;
+        setPrice(number);
+    }
+    
+    function finishChange(){
+      let number = parseFloat(pri.current.value);
+      if(isNaN(number))
+        setPrice(0);
+      else {
+        setPrice(number);
+      }
     }
 
     function onModifyMode(){
@@ -144,7 +151,7 @@ export default function ProductItem(props) {
                 <div style={{minHeight: "150px"}} className="product-text">
                     <div className="product-name">{product.name} <span>{productItem.productConfigurations?.map((config, index)=><Config key={index} value={config.variationOption.value} varOpId={config.variationOption.id}></Config>)}</span></div>
                     <div className='quick-change'>
-                        <div className='d-flex' style={{alignItems: "center"}}><input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={changePriceInputClass} value={price}></input> <span className={priceSpanClass}>{Intl.NumberFormat('vi-VN', {style: "currency", currency: "VND"}).format(price)}</span> <button className='btn btn-light ms-2' style={{width: "41px", height: "37px", padding: "0px"}} onClick={changePriceInputClass}><EditIcon className="edit-button"/></button></div>
+                        <div className='d-flex' style={{alignItems: "center"}}><input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={()=>{changePriceInputClass(); finishChange()}} value={price}></input> <span className={priceSpanClass}>{Intl.NumberFormat('en-US', {style: "currency", currency: "USD"}).format(price)}</span> <button className='btn btn-light ms-2' style={{width: "41px", height: "37px", padding: "0px"}} onClick={changePriceInputClass}><EditIcon className="edit-button"/></button></div>
                         <div className='d-flex mt-1'>
                             <button className="btn btn-light" style={{marginTop: "3px", marginBottom: "3px"}} onClick={()=>changeQtyInStock(1)}>+</button>
                             <div className='qty-input'>
