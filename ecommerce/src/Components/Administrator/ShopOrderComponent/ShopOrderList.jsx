@@ -1,15 +1,20 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./ShopOrder.css"
 import ShopOrderLine from './ShopOrderLine';
 const ShopOrderList = (props) => {
+    const [orderList, setOrderList] = useState(props.orders);
 
+    useEffect(()=>{
+        setOrderList(props.orders);
+    },[props])
+    
     return (
         <div className='order-list'>
             <table>
                 <thead>
                     <tr>
-                        <th>Order ID</th>
+                        <th>No. ID</th>
                         <th>Date</th>
                         <th>Customer</th>
                         <th>Status</th>
@@ -20,7 +25,7 @@ const ShopOrderList = (props) => {
 
                 <tbody>
                     {
-                        props.orders.map((order, index) =>
+                        orderList.map((order, index) =>
                             <ShopOrderLine key={index} order={order} status={props.status} />
                         )
                     }

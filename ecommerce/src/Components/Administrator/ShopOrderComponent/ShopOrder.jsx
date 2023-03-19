@@ -2,22 +2,23 @@ import React from 'react'
 import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useState, useEffect } from 'react';
 import "./ShopOrder.css"
 import ShopOrderList from './ShopOrderList';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const ShopOrder = () => {
 
     const [orderStatus, setOrderStatus] = useState([]);
     const [orders, setOrders] = useState([]);
+    
     useEffect(() => {
         ShopOrderService.getAllOrderStatus().then(response => {
             setOrderStatus(response.data);
         });
         getAllShopOrders();
     }, [])
-
-
 
     function search() {
         let search = document.getElementById("search-value").value;
@@ -30,9 +31,19 @@ const ShopOrder = () => {
     function filter() {
         let date = document.getElementById("date-value").value;
         let dateTime = new Date(date);
+        let utc = new Date(Date.UTC(dateTime.getFullYear(),
+                                    dateTime.getMonth(),
+                                    dateTime.getDate(),
+                                    dateTime.getHours(),
+                                    dateTime.getMinutes(),
+                                    dateTime.getSeconds()));
+        
+        console.log(utc);
+        console.log(dateTime)
         if (dateTime.getDate())
-            ShopOrderService.getShopOrderInDateTime(dateTime).then(response => {
+            ShopOrderService.getShopOrderInDateTime(utc).then(response => {
                 setOrders(response.data);
+                console.log(response.data);
             })
     }
 
@@ -40,12 +51,14 @@ const ShopOrder = () => {
     function getAllShopOrders() {
         ShopOrderService.getAllShopOrders().then(response => {
             setOrders(response.data);
+            console.log(response.data);
         });
     }
 
     function getShopOrderByOrderStatus(id) {
         ShopOrderService.getShopOrderByOrderStatus(id).then(response => {
             setOrders(response.data);
+            console.log(response.data);
         });
 
     }
@@ -63,7 +76,8 @@ const ShopOrder = () => {
 
     }
     return (
-        <div>
+        <div className='main-content'>
+            <h5 className='label text-muted'><FilterAltIcon/> Filter</h5>
             <div className="order-status-container">
                 <div className="order-status" onClick={getAllShopOrders}>
                     <span>All Orders</span>   
@@ -93,7 +107,7 @@ const ShopOrder = () => {
 
                 </div>
             </div>
-
+            <h5 className='label text-muted'>Result: {orders.length} orders</h5>
             <div>
                 <ShopOrderList orders={orders} status={orderStatus}/>
             </div>

@@ -13,6 +13,7 @@
     background-color: var(--dark);
     padding: 7px;
     min-width: 550px;
+    min-height: 100vh;
 }
 .main-modify {
     display: flex;

@@ -26,6 +26,10 @@ class ShopOderService {
         return axios.get(ORDER_BASE_URL+"/getAllOrderStatus");
     }
 
+    updateShopOrderStatus(orderId, statusId){
+        return axios.get(ORDER_BASE_URL+ "/quickUpdate/"+orderId+"/"+statusId);
+    }
+
 }
 
 export default new ShopOderService();
