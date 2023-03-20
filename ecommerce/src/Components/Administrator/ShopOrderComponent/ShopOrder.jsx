@@ -8,12 +8,13 @@ import "./ShopOrder.css"
 import ShopOrderList from './ShopOrderList';
 import { ConstructionOutlined } from '@mui/icons-material';
 import FunctionsIcon from '@mui/icons-material/Functions';
+import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 const ShopOrder = () => {
 
     const [orderStatus, setOrderStatus] = useState([]);
     const [orders, setOrders] = useState([]);
-    
+
     useEffect(() => {
         ShopOrderService.getAllOrderStatus().then(response => {
             setOrderStatus(response.data);
@@ -33,12 +34,12 @@ const ShopOrder = () => {
         let date = document.getElementById("date-value").value;
         let dateTime = new Date(date);
         let utc = new Date(Date.UTC(dateTime.getFullYear(),
-                                    dateTime.getMonth(),
-                                    dateTime.getDate(),
-                                    dateTime.getHours(),
-                                    dateTime.getMinutes(),
-                                    dateTime.getSeconds()));
-        
+            dateTime.getMonth(),
+            dateTime.getDate(),
+            dateTime.getHours(),
+            dateTime.getMinutes(),
+            dateTime.getSeconds()));
+
         console.log(utc);
         console.log(dateTime)
         if (dateTime.getDate())
@@ -78,10 +79,13 @@ const ShopOrder = () => {
     }
     return (
         <div className='main-content'>
-            <h5 className='label text-muted'><FilterAltIcon className='icon'/> Filter</h5>
+            <div>
+                <h2 className="title-page"><span><ListAltRoundedIcon className='icon' />Orders</span></h2>
+            </div>
+            <h5 className='label text-muted'><FilterAltIcon className='icon' /> Filter</h5>
             <div className="order-status-container">
                 <div className="order-status" onClick={getAllShopOrders}>
-                    <span>All Orders</span>   
+                    <span>All Orders</span>
                 </div>
                 {
                     orderStatus.map((status, index) => {
@@ -108,9 +112,9 @@ const ShopOrder = () => {
 
                 </div>
             </div>
-            <h5 className='label text-muted'><FunctionsIcon className='icon'/>Result: {orders.length} orders</h5>
+            <h5 className='label text-muted'><FunctionsIcon className='icon' />Result: {orders.length} order(s)</h5>
             <div>
-                <ShopOrderList orders={orders} status={orderStatus}/>
+                <ShopOrderList orders={orders} status={orderStatus} />
             </div>
         </div>
     )

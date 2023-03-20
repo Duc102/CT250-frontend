@@ -12,6 +12,7 @@ import ProductService from '../../../Services/CommonService/ProductService';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import ProductsIcon from '@mui/icons-material/Inventory';
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
 import VariationService from '../../../Services/CommonService/VariationService';
@@ -315,7 +316,9 @@ export default function AddProductComponent() {
     }
     return (
         <div className='main-content'>
-            {/* <ContentEditable html={product?.name} tagName='h2' onChange={setProductName}></ContentEditable> */}
+            <div>
+                <h2 className="title-page"><span><LibraryAddIcon className='icon' />Add Products</span></h2>
+            </div>
             <div className='model-name-container'>
                 <h1 className='product-name-detail'>
                     <ContentEditable html={product?.name} tagName='span' onChange={setProductName}></ContentEditable>

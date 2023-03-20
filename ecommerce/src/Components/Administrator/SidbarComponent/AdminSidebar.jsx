@@ -12,6 +12,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import Order from '@mui/icons-material/Mail';
 import ProductsIcon from '@mui/icons-material/Inventory';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 import "./AdminSidebar.css"
 import { NavLink } from 'react-router-dom';
@@ -88,7 +89,7 @@ export default function AdminSidbar() {
 
               <NavLink to="/administrator/orders">
                 <li className={'nav-link ' + menuData.Orders} onClick={()=>activeLink("Orders")}>
-                <Order className="icon"/>
+                <ListAltRoundedIcon className="icon"/>
                 <span className="text">Orders</span>
                 </li>
               </NavLink>
