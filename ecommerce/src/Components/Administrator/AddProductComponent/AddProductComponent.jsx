@@ -12,6 +12,7 @@ import ProductService from '../../../Services/CommonService/ProductService';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
+import ProductsIcon from '@mui/icons-material/Inventory';
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
 import VariationService from '../../../Services/CommonService/VariationService';
 import { findVariationOptionFromVariations } from "../ProductItemsComponent/Execute"
@@ -331,7 +332,7 @@ export default function AddProductComponent() {
                 productItems.map((proIt, index) => {
                     return (
                         <div key={index}>
-                            <h3 className="label-product-item">Product Item: {index + 1}</h3>
+                            <h5 className="label-product-item text-muted"> <ProductsIcon className="icon"/> Product Item: {index + 1}</h5>
                             <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)}></Variation>
                             <div className="product-modify">
                                 <div className='price d-flex flex-wrap' style={{ alignItems: "center" }}>

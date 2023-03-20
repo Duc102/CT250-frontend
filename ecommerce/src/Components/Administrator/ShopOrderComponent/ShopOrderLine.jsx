@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
@@ -7,7 +8,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 const ShopOrderLine = (props) => {
     const [order, setOrders] = useState(props.order);
-
+    const navigate = useNavigate();
     useEffect(()=>{
         setOrders(props.order);
     },[props])
@@ -31,6 +32,10 @@ const ShopOrderLine = (props) => {
         });
     }
 
+    function goToDetail(){
+        navigate(order.id+"/detail");
+    }
+
     return (
         <tr>
             <td style={{ textAlign: "center" }}>{order.id}</td>
@@ -51,7 +56,7 @@ const ShopOrderLine = (props) => {
             <td style={{ textAlign: "center" }} className='m-1'>
                 <div>
                     <button className='btn text-success' title='Confirm' onClick={quickUpdateOrderStatus}><CloudUploadIcon/></button>
-                    <button className='btn text-light' title='Info' onClick={()=>{}}><InfoIcon/></button>
+                    <button className='btn text-light' title='Info' onClick={goToDetail}><InfoIcon/></button>
                     <button className='btn text-danger' title='Delete'><DeleteIcon/></button>
                 </div>
                 

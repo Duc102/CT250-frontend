@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import "./ShopOrder.css"
 import ShopOrderList from './ShopOrderList';
 import { ConstructionOutlined } from '@mui/icons-material';
+import FunctionsIcon from '@mui/icons-material/Functions';
 
 const ShopOrder = () => {
 
@@ -77,7 +78,7 @@ const ShopOrder = () => {
     }
     return (
         <div className='main-content'>
-            <h5 className='label text-muted'><FilterAltIcon/> Filter</h5>
+            <h5 className='label text-muted'><FilterAltIcon className='icon'/> Filter</h5>
             <div className="order-status-container">
                 <div className="order-status" onClick={getAllShopOrders}>
                     <span>All Orders</span>   
@@ -107,17 +108,10 @@ const ShopOrder = () => {
 
                 </div>
             </div>
-            <h5 className='label text-muted'>Result: {orders.length} orders</h5>
+            <h5 className='label text-muted'><FunctionsIcon className='icon'/>Result: {orders.length} orders</h5>
             <div>
                 <ShopOrderList orders={orders} status={orderStatus}/>
             </div>
-
-            {/* <div className='m-3'>
-                <button onClick={getAllShopOrders}>All Orders</button>
-                <button onClick={() => { getShopOrderByOrderStatus(1) }}>Order By Status</button>
-                <button onClick={() => getShopOrderById(1)}>Order By Id</button>
-                <button onClick={getAllOrderStatus}>All Status</button>
-            </div> */}
         </div>
     )
 }
