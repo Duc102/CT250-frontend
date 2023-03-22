@@ -25,7 +25,7 @@ export default function Body(props) {
             <SideBar></SideBar>
             <h1>This is user: {props.user.name}</h1>
             <LazyComponent title="Laptop"></LazyComponent>
-            <LazyComponent title="Linh kiện PC"></LazyComponent>
+            <LazyComponent title="Linh kiện PC" category={3}></LazyComponent>
             <LazyComponent title="Có thể bạn quan tâm"></LazyComponent>
         </Container>
     )

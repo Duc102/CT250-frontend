@@ -1,3 +1,4 @@
+import { RepeatOneSharp } from '@mui/icons-material';
 import React from 'react';
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
@@ -28,18 +29,12 @@ const Login = (props) => {
             emailAddress: state.emailAddress,
             password: state.password
         };
-        console.log("Site user => " + JSON.stringify(siteUser));
         SiteUserService.login(siteUser).then((response)=>{
             let result = response.data;
             if (result) {
-                props.exe({
-                    id: 1,
-                    name: 'link',
-                    emailAddress: "link@gmail.com",
-                })
+                props.exe({...response.data})
                 navigate("/")
             }
-            console.log(response.data);
         });
     };
 
