@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
 import ProductItemLine from './ProductItemLine';
 
@@ -15,8 +15,10 @@ import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import PriceCheckRoundedIcon from '@mui/icons-material/PriceCheckRounded';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
+
 const ShopOrderDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [order, setOrder] = useState();
     const originOrder = useRef({});
     const [orderStatus, setOrderStatus] = useState([]);
@@ -24,7 +26,6 @@ const ShopOrderDetail = () => {
 
     useEffect(() => {
         ShopOrderService.getShopOrderById(id).then(response => {
-            console.log(response.data);
             setOrder(response.data);
             originOrder.current = {...response.data};
             ShopOrderService.getAllOrderStatus().then(response => {
@@ -59,11 +60,18 @@ const ShopOrderDetail = () => {
 
     function updateOrderStatus(){
         ShopOrderService.updateShopOrderStatus(order.id, order.orderStatus.id).then(response=>{
-            console.log(response.data);
+            console.log("Update Result: ",response.data);
         });
         if(!modifyMode){
             onModifyMode();
         }
+    }
+
+    function deleteShopOrder(){
+        ShopOrderService.deleteShopOrder(order.id).then(response=>{
+            console.log("Delete Result: ", response.data);
+            navigate("/administrator/orders");
+        })
     }
 
     function cancel(){
@@ -145,7 +153,7 @@ const ShopOrderDetail = () => {
                     <div>
                         <button className='btn btn-success flex-grow-1 m-1'>Export bill</button>
                         <button className='btn btn-dark border border-danger flex-grow-1 m-1' disabled={modifyMode} onClick={updateOrderStatus}>Save</button>
-                        <button className='btn btn-danger border border-danger flex-grow-1 m-1'>Delete</button>
+                        <button className='btn btn-danger border border-danger flex-grow-1 m-1' onClick={deleteShopOrder}>Delete</button>
                         <button className='btn btn-dark border border-danger flex-grow-1 m-1 me-0' disabled={modifyMode} onClick={cancel}>Cancel</button>
                     </div>
                 </div>

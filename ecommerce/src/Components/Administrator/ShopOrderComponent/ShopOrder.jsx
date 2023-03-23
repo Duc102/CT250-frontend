@@ -1,14 +1,16 @@
 import React from 'react'
+import { useState, useEffect} from 'react';
 import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
+import OrdersContext from './OrdersContext';
+
+
+import "./ShopOrder.css";
+import ShopOrderList from './ShopOrderList';
+import FunctionsIcon from '@mui/icons-material/Functions';
+import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { useState, useEffect } from 'react';
-import "./ShopOrder.css"
-import ShopOrderList from './ShopOrderList';
-import { ConstructionOutlined } from '@mui/icons-material';
-import FunctionsIcon from '@mui/icons-material/Functions';
-import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 const ShopOrder = () => {
 
@@ -113,8 +115,11 @@ const ShopOrder = () => {
                 </div>
             </div>
             <h5 className='label text-muted'><FunctionsIcon className='icon' />Result: {orders.length} order(s)</h5>
+            
             <div>
-                <ShopOrderList orders={orders} status={orderStatus} />
+                <OrdersContext.Provider value={{orders: orders, setOrders: setOrders}}>
+                    <ShopOrderList orders={orders} status={orderStatus} />
+                </OrdersContext.Provider>
             </div>
         </div>
     )

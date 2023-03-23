@@ -31,6 +31,14 @@ class ShopOderService {
         return axios.post(ORDER_BASE_URL+"/getShopOrder/dateTime", dateTime);
     }
 
+    getTodayShopOrder(){
+        return axios.get(ORDER_BASE_URL+"/todayShopOrders");
+    }
+
+    getTodayEarning(){
+        return axios.get(ORDER_BASE_URL+"/todayEarning");
+    }
+
     getAllOrderStatus(){
         return axios.get(ORDER_BASE_URL+"/getAllOrderStatus");
     }
@@ -39,6 +47,9 @@ class ShopOderService {
         return axios.get(ORDER_BASE_URL+ "/quickUpdate/"+orderId+"/"+statusId);
     }
 
+    deleteShopOrder(id){
+        return axios.get(ORDER_BASE_URL+"/quickDeleteOrder/"+id)
+    }
 }
 
 export default new ShopOderService();

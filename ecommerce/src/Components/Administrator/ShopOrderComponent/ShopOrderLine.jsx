@@ -1,13 +1,20 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
+import OrdersContext from './OrdersContext';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
 import InfoIcon from '@mui/icons-material/Info';
 
 const ShopOrderLine = (props) => {
     const [order, setOrders] = useState(props.order);
+    const context = useContext(OrdersContext);
+    const orders = context.orders;
+    const updateOrders = context.setOrders;
+
     const navigate = useNavigate();
     useEffect(()=>{
         setOrders(props.order);
@@ -36,6 +43,17 @@ const ShopOrderLine = (props) => {
         navigate(order.id+"/detail");
     }
 
+    function deleteShopOder(){
+        ShopOrderService.deleteShopOrder(order.id).then(response=>{
+            console.log("Delete Result: ", response.data);
+        })
+        let ls = orders;
+        let el = ls.filter(or => or.id === order.id);
+        let index = ls.indexOf(el[0]);
+        ls.splice(index, 1);
+        updateOrders([...ls]);
+    }
+
     return (
         <tr>
             <td style={{ textAlign: "center" }}>{order.id}</td>
@@ -57,7 +75,7 @@ const ShopOrderLine = (props) => {
                 <div>
                     <button className='btn text-success' title='Confirm' onClick={quickUpdateOrderStatus}><CloudUploadIcon/></button>
                     <button className='btn text-light' title='Info' onClick={goToDetail}><InfoIcon/></button>
-                    <button className='btn text-danger' title='Delete'><DeleteIcon/></button>
+                    <button className='btn text-danger' title='Delete' onClick={deleteShopOder}><DeleteIcon/></button>
                 </div>
                 
             </td>

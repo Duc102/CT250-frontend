@@ -11,6 +11,10 @@ class SiteUserService {
     login(siteUser){
         return axios.post(SITEUSER_BASE_URL+"/login", siteUser);
     }
+
+    countSiteUser(){
+        return axios.get(SITEUSER_BASE_URL+"/countSiteUser");
+    }
 }
 
 export default new SiteUserService();
