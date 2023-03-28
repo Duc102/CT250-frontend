@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductService from '../../../Services/CommonService/ProductService';
 import VariationService from '../../../Services/CommonService/VariationService';
-
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function ProductItem(props) {
@@ -68,14 +67,26 @@ export default function ProductItem(props) {
             }
         })
         ProductService.updateProductItem({...productItem, price: price, qtyInStock: qtyInStock});
+        props.setNotify({isOpen: true, message: "Update successful!", type: "success"});
         if(!modifyMode)
             offModifyMode();
     }
     // Delete a product
     function quickDelete(){
-        ProductService.deleteProductItem(productItem.id).then((response)=>{
-            let track = new Date();
-            props.refresh(track.getTime());
+        // ProductService.deleteProductItem(productItem.id).then((response)=>{
+        //     let track = new Date();
+        //     props.refresh(track.getTime());
+        // });
+        props.setConfirmDialog({
+            isOpen: true,
+            title: "Are you sure delete this product item?",
+            subTitle: "You can't undo this operation.",
+            commit: () => {
+                ProductService.deleteProductItem(productItem.id).then((response)=>{
+                    let track = new Date();
+                    props.refresh(track.getTime());
+                });
+            }
         });
     }
 

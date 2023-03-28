@@ -8,12 +8,19 @@ import "./Style.css"
 import ProductCategoryService from '../../../Services/CommonService/ProductCategoryService';
 import Variation from './Variation';
 import ProductListRow from './ProductListRow';
+import AlertNote from "../Notification/AlertNote"
+import ConfirmDialog from '../Notification/ConfirmDialog';
+
 import InventoryIcon from '@mui/icons-material/Inventory';
-export default function ProductsComponent() {
+
+export default function ProductsComponent(props) {
 
     const [data, setData] = useState([]);
     const [categoryId, setCategoryId] = useState(0);
     const [conditions, setConditions] = useState([]);
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: "info" });
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle:"", commit: ()=>{}});
+
     useEffect(() => {
         ProductCategoryService.getProductCategoryZeroLevel().then((response) => {
             if (response.data.length > 0) {
@@ -24,12 +31,11 @@ export default function ProductsComponent() {
                 setData(data);
             }
         });
-
+        props.setActbar("Products");
     }, []);
 
     return (
-        <div className='product-contain'>
-            
+        <div className='product-contain main-content'>
             <header>
             <div>
                 <h2 className="title-page"><span><InventoryIcon className='icon' />Products</span></h2>
@@ -39,7 +45,9 @@ export default function ProductsComponent() {
                 </div>
                 <Variation goal="get-variations" categoryId={categoryId} setConditions={setConditions}></Variation>
             </header>
-            <ProductListRow value={categoryId} conditions={conditions}></ProductListRow>
+            <ProductListRow value={categoryId} conditions={conditions} setNotify={setNotify} setConfirmDialog={setConfirmDialog}></ProductListRow>
+            <AlertNote notify = {notify} setNotify = {setNotify}/>
+            <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog}></ConfirmDialog>
         </div>
     )
 }

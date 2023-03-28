@@ -45,3 +45,35 @@
 .widget .right .widget-icon{
     align-self: flex-end;
 }
+
+.topTen, .revenue {
+    display: flex;
+    justify-content: center;
+    /*  align-items: center; */
+    flex-wrap: wrap;
+    border: 1px solid white;
+    border-radius: 6px;
+    margin: 3px;
+}
+
+.topTen .topTen-chart, .revenue-chart  {
+    flex-grow: 1;
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.topTen .topTen-note, .revenue .revenue-note {
+    margin: 10px;
+    flex-grow: 1;
+    color: white;
+}
+
+.widget-link {
+    text-decoration: none;
+    color: #6c757d;
+}
+
+.widget-link:hover{
+    color: red;
+}

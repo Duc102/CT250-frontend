@@ -10,7 +10,7 @@
 }
 
 .product-contain header {
-    background-image: linear-gradient(black, #E8E9E9, transparent 98%);
+    background-image: none;
     padding: 5px;
 }
 
@@ -18,7 +18,7 @@
     font-size: 18px;
 }
 
-.category-title, .variation-title, .price-title, .sku-title {
+.category-title, .variation-title, .price-title, .sku-title, .name-title {
     font-weight: bolder;
     font-family: 'Poppins', sans-serif;
     font-size: 18px;
@@ -50,6 +50,7 @@ option:focus {
     border-radius: 3px;
     padding: 5px;
     width: 90%;
+    max-width: 275px;
 }
 
 .product-list-info .product-image {
@@ -76,7 +77,8 @@ option:focus {
 
 .price-lg {
     font-size: 1.875rem; 
-    color: #f57224;
+    /* color: #f57224; */
+    color: rgb(0,255,0);
     display: flex;
     align-items: center;
 }
@@ -97,7 +99,8 @@ option:focus {
 }
 
 .quick-change .form-control:focus.price-lg {
-    color: #f57224;
+    /* color: #f57224; */
+    color: rgb(0,255,0);
 }
 
 .close-price-input {

@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from "../../User/Images/logo.png"
-import { useState } from 'react';
+import { useState, useEffect, memo } from 'react';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SearchIcon from '@mui/icons-material/Search';
@@ -16,9 +16,9 @@ import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 import "./AdminSidebar.css"
 import { NavLink } from 'react-router-dom';
-export default function AdminSidbar() {
+const AdminSidbar = (props) =>{
   const [menuData, setMenuData] = useState({
-    Dashboard: "active",
+    Dashboard: "",
     Products: "",
     AddProduct: "",
     Category: "",
@@ -30,10 +30,17 @@ export default function AdminSidbar() {
   function clickOnToggleButton(){
     if(sidebarClass.includes("close")){
       setSidebarClass("sidebar");
+      props.setMainClass("main");
     } else {
       setSidebarClass(sidebarClass+" close");
+      props.setMainClass("main-full");
     }
   }
+
+  useEffect(()=>{
+    activeLink(props.activeSidebar);
+  }, [props.activeSidebar]);
+  
   function activeLink(name){
     const newActiveData = {
       Dashboard: "",
@@ -54,10 +61,10 @@ export default function AdminSidbar() {
         </header>
         <div className="menu-bar">
           <div className="menu">
-            <div className='search-box'>
+            {/* <div className='search-box'>
               <span className="icon"><SearchIcon style={{color: "white"}}/></span>
               <input type="search" placeholder='Search ...'></input>
-            </div>
+            </div> */}
             <ul className='menu-links'>
               <NavLink to="/administrator">
                 <li className={'nav-link '+menuData.Dashboard} onClick={()=>activeLink("Dashboard") }>
@@ -80,7 +87,7 @@ export default function AdminSidbar() {
                 </li>
               </NavLink>
 
-              <NavLink to="/administrator">
+              <NavLink to="/administrator/categories">
                 <li className={'nav-link ' + menuData.Category} onClick={()=>activeLink("Category")}>
                 <CategoryIcon className="icon"/>
                 <span className="text"> Categories</span>
@@ -94,7 +101,7 @@ export default function AdminSidbar() {
                 </li>
               </NavLink>
 
-              <NavLink to="/administrator">
+              <NavLink to="/administrator/users">
                 <li className={'nav-link ' + menuData.Users} onClick={()=>activeLink("Users")}>
                 <UserIcon className="icon"/>
                 <span className="text"> Users</span>
@@ -114,3 +121,6 @@ export default function AdminSidbar() {
     </nav>
   )
 }
+export default memo(AdminSidbar);
+
+

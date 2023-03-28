@@ -159,7 +159,8 @@ option:focus {
 
 .product-modify .price-lg-detail{
     font-size: 2.875rem; 
-    color: #f57224;
+    /* color: #f57224; */
+    color: rgb(0,255,0);
     align-items: center;
 }
 
@@ -175,7 +176,8 @@ option:focus {
 }
 
 .product-modify .form-control:focus.price-lg-detail {
-    color: #f57224;
+    /* color: #f57224; */
+    color: rgb(0,255,0);
     box-shadow: none;
 }
 

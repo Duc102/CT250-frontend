@@ -15,6 +15,10 @@ import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import PriceCheckRoundedIcon from '@mui/icons-material/PriceCheckRounded';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
+import Bill from './Bill';
+import AlertNote from "../Notification/AlertNote"
+import ConfirmDialog from '../Notification/ConfirmDialog';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 const ShopOrderDetail = () => {
     const { id } = useParams();
@@ -23,7 +27,8 @@ const ShopOrderDetail = () => {
     const originOrder = useRef({});
     const [orderStatus, setOrderStatus] = useState([]);
     const [modifyMode, setModifyCode] = useState(true);
-
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: "info" });
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle:"", commit: ()=>{}});
     useEffect(() => {
         ShopOrderService.getShopOrderById(id).then(response => {
             setOrder(response.data);
@@ -63,15 +68,28 @@ const ShopOrderDetail = () => {
             console.log("Update Result: ",response.data);
         });
         if(!modifyMode){
-            onModifyMode();
+            offModifyMode();
         }
+        setNotify({isOpen: true, message: "Update successful!", type: "success"});
+        
     }
 
     function deleteShopOrder(){
-        ShopOrderService.deleteShopOrder(order.id).then(response=>{
-            console.log("Delete Result: ", response.data);
-            navigate("/administrator/orders");
-        })
+        // ShopOrderService.deleteShopOrder(order.id).then(response=>{
+        //     console.log("Delete Result: ", response.data);
+        //     navigate("/administrator/orders");
+        // })
+        setConfirmDialog({
+            isOpen: true,
+            title: "Are you sure delete this order?",
+            subTitle: "You can't undo this operation.",
+            commit: () => {
+                ShopOrderService.deleteShopOrder(order.id).then(response=>{
+                    console.log("Delete Result: ", response.data);
+                    navigate("/administrator/orders");
+                })
+            }
+        });
     }
 
     function cancel(){
@@ -149,14 +167,23 @@ const ShopOrderDetail = () => {
                         <div className='info-field'><PriceCheckRoundedIcon className="icon text-success" /><span className='info-title'>Paid</span></div>
                     </div>
                 </div>
+                {/* <div>
+                    <PDFViewer>
+                        <Bill order={order}></Bill>
+                    </PDFViewer>
+                </div> */}
                 <div className='commit d-flex'>
                     <div>
-                        <button className='btn btn-success flex-grow-1 m-1'>Export bill</button>
+                        <PDFDownloadLink className='btn btn-success flex-grow-1 m-1' document={<Bill order={order} />} fileName={"bill_"+ order.id}>
+                            {({loading})=>(loading ? "Loadding Bill ...":"Export Bill")}
+                        </PDFDownloadLink>
                         <button className='btn btn-dark border border-danger flex-grow-1 m-1' disabled={modifyMode} onClick={updateOrderStatus}>Save</button>
                         <button className='btn btn-danger border border-danger flex-grow-1 m-1' onClick={deleteShopOrder}>Delete</button>
                         <button className='btn btn-dark border border-danger flex-grow-1 m-1 me-0' disabled={modifyMode} onClick={cancel}>Cancel</button>
                     </div>
                 </div>
+                <AlertNote notify = {notify} setNotify = {setNotify}/>
+                <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog}></ConfirmDialog>
             </div>
         );
     else return <></>

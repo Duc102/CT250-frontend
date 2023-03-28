@@ -11,6 +11,8 @@ import Editor from '../ProductItemsComponent/Editor';
 import ProductService from '../../../Services/CommonService/ProductService';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CategoryIcon from '@mui/icons-material/Category';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import ProductsIcon from '@mui/icons-material/Inventory';
@@ -19,7 +21,8 @@ import VariationService from '../../../Services/CommonService/VariationService';
 import { findVariationOptionFromVariations } from "../ProductItemsComponent/Execute"
 
 import "./AddProductComponent.css"
-export default function AddProductComponent() {
+
+export default function AddProductComponent(props) {
     const [zeroCategory, setZeroCategory] = useState([]);
     const [category, setCategory] = useState(0);
     const [variationOfCategory, setVariationOfCategory] = useState([]);
@@ -48,9 +51,6 @@ export default function AddProductComponent() {
     const [description, setDescription] = useState();
     const [reset, setReset] = useState(0);
 
-
-    const [priceInputClass, setPriceInputClass] = useState('form-control price-lg-detail close-price-input');
-    const [priceSpanClass, setPriceSpanClass] = useState('form-control price-lg-detail');
 
     function refresh() {
         setCategory(0);
@@ -96,6 +96,10 @@ export default function AddProductComponent() {
                 setVariationOfCategory(tmpVar);
             })
     }, [category])
+
+    useEffect(() => {
+        props.setActbar("AddProduct");
+    }, [])
 
     function setPrice(id) {
         let number = parseInt(document.getElementById("new-product-price-" + id).value);
@@ -300,7 +304,7 @@ export default function AddProductComponent() {
                 }
                 ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
                     let first = response.data[0].id;
-                    navigate("/administrator/products/productItemsDetail/"+first);
+                    navigate("/administrator/products/productItemsDetail/" + first);
                 })
             })
         });
@@ -319,23 +323,27 @@ export default function AddProductComponent() {
             <div>
                 <h2 className="title-page"><span><LibraryAddIcon className='icon' />Add Products</span></h2>
             </div>
-            <div className='model-name-container'>
+            <h5 className='label text-muted'><DriveFileRenameOutlineIcon className='icon' /> Name</h5>
+            {/* <div className='model-name-container'>
                 <h1 className='product-name-detail'>
                     <ContentEditable html={product?.name} tagName='span' onChange={setProductName}></ContentEditable>
                 </h1>
+
+            </div> */}
+            <div className='new-name'>
+                <span className="name-title">Product Name</span>
+                <input id={"product-name"} onChange={setProductName} placeholder="New Product Name"></input>
             </div>
-            <div className="section-line"> CATEGORY </div>
+            <h5 className='label text-muted'><CategoryIcon className='icon' /> Category</h5>
             <div className='category d-flex flex-wrap'>
                 <Category goal="new-product" title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
             </div>
-
-            <div className="section-line"> VARIATIONS </div>
 
             {
                 productItems.map((proIt, index) => {
                     return (
                         <div key={index}>
-                            <h5 className="label-product-item text-muted"> <ProductsIcon className="icon"/> Product Item: {index + 1}</h5>
+                            <h5 className="label text-muted"> <ProductsIcon className="icon" /> Product Item: {index + 1}</h5>
                             <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)}></Variation>
                             <div className="product-modify">
                                 <div className='price d-flex flex-wrap' style={{ alignItems: "center" }}>
@@ -347,7 +355,6 @@ export default function AddProductComponent() {
                                     <div className='new-sku'>
                                         <span className="sku-title">SKU</span>
                                         <input id={"new-product-ksu-" + proIt.id} onChange={() => setKSU(proIt.id)} placeholder="SKU0001"></input>
-
                                     </div>
                                 </div>
                                 <div className='d-flex justify-content-center'>
@@ -369,7 +376,7 @@ export default function AddProductComponent() {
             <div style={{ margin: "10px", marginLeft: "3px" }}>
                 <button className='btn btn-light ps-0' onClick={addNewProductItem}> <span style={{ padding: "5px" }}><AddCircleIcon /></span> New Variation </button>
             </div>
-            <div className="section-line"> DESCRIPTION </div>
+            <h5 className='label text-muted'><DriveFileRenameOutlineIcon className='icon' /> Description</h5>
             <div className='description'>
                 <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>

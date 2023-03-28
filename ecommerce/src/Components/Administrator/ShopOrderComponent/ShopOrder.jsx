@@ -12,16 +12,21 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
-const ShopOrder = () => {
+import ConfirmDialog from '../Notification/ConfirmDialog';
+import AlertNote from '../Notification/AlertNote';
+
+const ShopOrder = (props) => {
 
     const [orderStatus, setOrderStatus] = useState([]);
     const [orders, setOrders] = useState([]);
-
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: "info" });
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle:"", commit: ()=>{}})
     useEffect(() => {
         ShopOrderService.getAllOrderStatus().then(response => {
             setOrderStatus(response.data);
         });
         getAllShopOrders();
+        props.setActbar("Orders")
     }, [])
 
     function search() {
@@ -102,7 +107,7 @@ const ShopOrder = () => {
                     })
                 }
             </div>
-            <div className='d-flex align-item-center'>
+            <div className='d-flex align-item-center' style={{flexWrap: "wrap"}}>
                 <div className='search-box'>
                     <input id="search-value" type="search" placeholder='Search order by id ...'></input>
                     <span className="icon" onClick={search}><SearchIcon style={{ color: "white" }} /></span>
@@ -110,17 +115,17 @@ const ShopOrder = () => {
                 <div className='search-box'>
                     <input id="date-value" type='datetime-local'></input>
                     <span className="icon" onClick={filter}><FilterListIcon style={{ color: "white" }} /></span>
-
-
                 </div>
             </div>
             <h5 className='label text-muted'><FunctionsIcon className='icon' />Result: {orders.length} order(s)</h5>
             
             <div>
-                <OrdersContext.Provider value={{orders: orders, setOrders: setOrders}}>
+                <OrdersContext.Provider value={{orders: orders, setOrders: setOrders, setNotify: setNotify, setConfirmDialog: setConfirmDialog}}>
                     <ShopOrderList orders={orders} status={orderStatus} />
                 </OrdersContext.Provider>
             </div>
+            <AlertNote notify = {notify} setNotify = {setNotify}/>
+            <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog}></ConfirmDialog>
         </div>
     )
 }

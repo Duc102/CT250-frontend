@@ -1,17 +1,17 @@
 import { KeyboardArrowUp, MonetizationOnOutlined, Person, PersonOutline } from '@mui/icons-material';
 import React from 'react';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
+import { NavLink } from 'react-router-dom';
 
 const Widget = (props) => {
 
     let data;
     switch (props.goal) {
         case "user":
-            console.log("this is user");
             data = {
                 title: "Users",
                 isMoney: false,
-                link: "See all users",
+                link: <NavLink className="widget-link" to="/administrator/orders">See all users</NavLink>,
                 icon: <Person className='widget-icon' />
             };
             break;
@@ -19,7 +19,7 @@ const Widget = (props) => {
             data = {
                 title: "Today's Orders",
                 isMoney: false,
-                link: "See all orders",
+                link: <NavLink className="widget-link" to="/administrator/orders">See all orders</NavLink>,
                 icon: <ListAltRoundedIcon className='widget-icon' />
             };
             break;

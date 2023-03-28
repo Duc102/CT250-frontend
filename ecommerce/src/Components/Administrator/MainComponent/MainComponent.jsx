@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import {Routes, Route} from "react-router-dom"
 import AddProductComponent from '../AddProductComponent/AddProductComponent';
 import Dashboard from '../DashboardComponent/Dashboard';
@@ -9,16 +9,17 @@ import ShopOrderDetail from '../ShopOrderComponent/ShopOrderDetail';
 
 import "./Style.css"
 
-export default function MainComponent() {
+export default function MainComponent(props) {
+  
   return (
-    <div className='main'>
+    <div className={props.mainClass}>
         <Routes>
-            <Route path='/' element={<Dashboard/>}></Route>
-            <Route path='/products' element={<ProductsComponent/>}></Route>
-            <Route path='/products/productItemsDetail/:id' element={<ProductItemsDetail/>}></Route>
-            <Route path='/addProduct' element={<AddProductComponent/>}></Route>
-            <Route path='/orders' element={<ShopOrder/>}></Route>
-            <Route path="/orders/:id/detail" element={<ShopOrderDetail/>}></Route>
+            <Route path='/' element={<Dashboard setActbar={props.setActbar}/>}></Route>
+            <Route path='/products' element={<ProductsComponent setActbar={props.setActbar}/>}></Route>
+            <Route path='/products/productItemsDetail/:id' element={<ProductItemsDetail setActbar={props.setActbar}/>}></Route>
+            <Route path='/addProduct' element={<AddProductComponent setActbar={props.setActbar}/>}></Route>
+            <Route path='/orders' element={<ShopOrder setActbar={props.setActbar}/>}></Route>
+            <Route path="/orders/:id/detail" element={<ShopOrderDetail setActbar={props.setActbar}/>}></Route>
         </Routes>
     </div>
   )

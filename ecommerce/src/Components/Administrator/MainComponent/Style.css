@@ -2,4 +2,12 @@
     width: calc(100vw - 280px);
     min-height: 100vh;
     margin-left: 255px;
+    max-width: 1920px;
+}
+
+.main-full {
+    width: calc(100vw - 100px);
+    max-width: 1920px;
+    min-height: 100vh;
+    margin-left: 75px;
 }

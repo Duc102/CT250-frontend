@@ -35,7 +35,7 @@ const ProductListRow = (props) => {
             products.map((product, index)=>{
                 return (
                 <div key={index} className="col-sm-6 col-lg-4 p-1" style={{minWidth: "310px"}}>
-                    <ProductItem productItem={product} refresh={setHaveChange}></ProductItem>
+                    <ProductItem productItem={product} refresh={setHaveChange} setNotify={props.setNotify} setConfirmDialog={props.setConfirmDialog}></ProductItem>
                 </div>
                 )
             })

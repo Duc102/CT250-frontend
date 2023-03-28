@@ -20,8 +20,8 @@ class ProductService {
         return axios.post(PRODUCT_BASE_URL + "/category/"+categoryId+"/conditions", conditions);
     }
 
-    getProductByProductItemId(productItemId){
-        return axios.get(PRODUCT_BASE_URL + "/productItem/" +productItemId + "/info");
+    async getProductByProductItemId(productItemId){
+        return await axios.get(PRODUCT_BASE_URL + "/productItem/" +productItemId + "/info");
     }
 
     getProductItemByCategoryId(categoryId){
