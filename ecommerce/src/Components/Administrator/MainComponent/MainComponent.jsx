@@ -1,6 +1,7 @@
 import React ,{useState} from 'react'
 import {Routes, Route} from "react-router-dom"
 import AddProductComponent from '../AddProductComponent/AddProductComponent';
+import AddProductItem from '../AddProductComponent/AddProductItem';
 import Dashboard from '../DashboardComponent/Dashboard';
 import ProductsComponent from '../ProductComponent/ProductsComponent'
 import ProductItemsDetail from '../ProductItemsComponent/ProductItemsDetail';
@@ -18,6 +19,7 @@ export default function MainComponent(props) {
             <Route path='/products' element={<ProductsComponent setActbar={props.setActbar}/>}></Route>
             <Route path='/products/productItemsDetail/:id' element={<ProductItemsDetail setActbar={props.setActbar}/>}></Route>
             <Route path='/addProduct' element={<AddProductComponent setActbar={props.setActbar}/>}></Route>
+            <Route path='/addProductItem/:productId' element={<AddProductItem setActbar={props.setActbar}/>}></Route>
             <Route path='/orders' element={<ShopOrder setActbar={props.setActbar}/>}></Route>
             <Route path="/orders/:id/detail" element={<ShopOrderDetail setActbar={props.setActbar}/>}></Route>
         </Routes>

@@ -97,7 +97,7 @@ const ShopOrder = (props) => {
                 {
                     orderStatus.map((status, index) => {
                         return (
-                            <div key={index} className="order-status" onClick={() => { getShopOrderByOrderStatus(status.id) }}>
+                            <div key={index} className={"order-status status-color-"+status.id} onClick={() => { getShopOrderByOrderStatus(status.id) }}>
                                 <span>
                                     {status.status}
                                 </span>

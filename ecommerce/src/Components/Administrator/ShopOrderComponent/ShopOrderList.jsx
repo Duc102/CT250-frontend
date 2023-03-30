@@ -25,9 +25,13 @@ const ShopOrderList = (props) => {
 
                 <tbody>
                     {
+                        orderList.length > 0?
                         orderList.map((order, index) =>
                             <ShopOrderLine key={index} order={order} status={props.status} />
                         )
+                        :<tr>
+                            <td colSpan={6} className="p-2">We don't have any orders like that</td>
+                        </tr>
                     }
                 </tbody>
 

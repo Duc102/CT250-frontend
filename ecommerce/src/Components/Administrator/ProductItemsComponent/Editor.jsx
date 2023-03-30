@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useRef, memo} from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { useQuill } from 'react-quilljs';
 import "./Style.css";
@@ -7,39 +7,46 @@ import "./Style.css";
 
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
 function Editor(props) {
-    const {quill, quillRef} = useQuill();
+    const { quill, quillRef } = useQuill();
     let autoEdit = useRef(true);
     const id = useRef(0);
 
-    useEffect(()=>{
-        if(quill){
-            quill.on("editor-change",(delta, oldDelta, source)=>{
+    useEffect(() => {
+        if (quill) {
+            quill.on("editor-change", (delta, oldDelta, source) => {
                 let content = quill.getContents();
                 props.setDescription(content);
-                if(autoEdit.current){
+                if (autoEdit.current) {
                     autoEdit.current = false;
-                    props.offModifyMode();
+                    props.onModifyMode();
                 } else {
-                    if(delta === "text-change"){
+                    if (delta === "text-change") {
                         props.onModifyMode();
                     }
                 }
             });
             quill.getModule('toolbar').addHandler('image', selectLocalImage);
         }
-    },[quill])
+    }, [quill])
 
     useEffect(() => {
-        if(props.product?.id){
-            UploadFileService.readProductDescriptionsFile(props.product.id).then(response=>{
+        if (props.product?.id) {
+            UploadFileService.readProductDescriptionsFile(props.product.id).then(response => {
                 props.setDescription(response.data);
-                if(quill){
+                if (quill) {
                     quill.setContents(response.data);
                     autoEdit.current = true;
                     props.offModifyMode();
                     quill.getModule('toolbar').addHandler('image', selectLocalImage);
-                } 
+                }
             });
+        } else {
+            if (quill) {
+                quill.setContents({ops: [{insert: "\n"}]});
+                autoEdit.current = true;
+                props.offModifyMode();
+                quill.getModule('toolbar').addHandler('image', selectLocalImage);
+            }
         }
     }, [props.product, props.reset]);
 
@@ -50,19 +57,22 @@ function Editor(props) {
     }
 
     const saveToServer = (newImage) => {
-        UploadFileService.uploadFile(newImage.name, newImage.storageLocation, newImage.src).then((response) =>{
+        UploadFileService.uploadFile(newImage.name, newImage.storageLocation, newImage.src).then((response) => {
             insertToEditor(response.data.downloadUri);
         });
     }
 
-    function onInsertImage(input){
+    function onInsertImage(input) {
         const file = input.files[0];
         var newImage = {};
-        newImage["name"] = "Description" + new Date().getTime(); // set name of a new image.
+        let fileName = file.name;
+        fileName = fileName.substring(0, fileName.lastIndexOf("."));
+        newImage["name"] = fileName;
+        // newImage["name"] = "Description" + new Date().getTime(); // set name of a new image.
         let extension = file.name;
-        extension=extension.substring(extension.lastIndexOf(".")+1); // get extension from file name.
-        newImage['extension']= extension;
-        newImage["storageLocation"] = "/Products/"+props.product.id+"/Images"; // set a storage location for save a new image of Upload file service, example: /Products/6/17
+        extension = extension.substring(extension.lastIndexOf(".") + 1); // get extension from file name.
+        newImage['extension'] = extension;
+        newImage["storageLocation"] = "/Products/" + props.product.id + "/Images"; // set a storage location for save a new image of Upload file service, example: /Products/6/17
         newImage["src"] = file;
         saveToServer(newImage);
     }
@@ -75,16 +85,16 @@ function Editor(props) {
         input.onchange = () => {
             onInsertImage(input);
         }
-        
+
     }
-    
+
     return (
         <div>
             <div className="descriptions" ref={quillRef}></div>
         </div>
     )
-    
-  }
+
+}
 export default memo(Editor);
 
 // Editor.modules = {

@@ -14,8 +14,8 @@ const Variation = (props) => {
       setVariation(tmpVar);
       // props.setConditions([]);
     })
-    if(props.init === undefined){
-      props.setConditions([]);
+    if(props.init === undefined && (!props.goal.includes("modify") || !props.goal.includes("new-product"))){
+      props.setConditions([]); // to select all product item with all configurations.
     }
   }, [props.categoryId])
 
@@ -29,6 +29,22 @@ const Variation = (props) => {
     }
   },[variations])
 
+  
+  
+  useEffect(()=>{
+    if(props.init !== undefined){
+      variations.forEach((variation)=>{
+        let varSel = document.getElementById(props.goal+"-"+variation.id);
+        if(props.init[variation.id] !== undefined)
+          varSel.value = props.init[variation.id];
+      })
+    } else
+    variations.forEach((variation)=>{
+      let varSel = document.getElementById(props.goal+"-"+variation.id);
+        varSel.value = 0;
+    })
+  },[props.reset])
+
   function selectVariation(){
     if(props.goal.includes("modify") || props.goal.includes("new-product")) {
       let conditions = {};
@@ -36,7 +52,7 @@ const Variation = (props) => {
         let varSel = document.getElementById(props.goal+"-"+variation.id);
         if(parseInt(varSel.value) !== 0)
           conditions[variation.id] = varSel.value;
-      })
+      });
       props.setConditions(conditions);
     } else {
       let conditions = [];

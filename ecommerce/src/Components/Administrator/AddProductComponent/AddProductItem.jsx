@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import ContentEditable from 'react-contenteditable';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Category from '../ProductComponent/Category';
 import Variation from '../ProductComponent/Variation';
@@ -12,6 +12,7 @@ import ProductService from '../../../Services/CommonService/ProductService';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CategoryIcon from '@mui/icons-material/Category';
+import { Delete } from '@mui/icons-material';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
@@ -21,23 +22,23 @@ import VariationService from '../../../Services/CommonService/VariationService';
 import { findVariationOptionFromVariations } from "../ProductItemsComponent/Execute"
 
 import "./AddProductComponent.css"
-import { Delete } from '@mui/icons-material';
 
-export default function AddProductComponent(props) {
+export default function AddProductItem(props) {
+    const { productId } = useParams();
     const [zeroCategory, setZeroCategory] = useState([]);
     const [category, setCategory] = useState(0);
+    const [treeCategory, setTreeCategory] = useState();
     const [variationOfCategory, setVariationOfCategory] = useState([]);
     const [product, setProduct] = useState({ id: 0, name: "New Product Name" });
     const [numberProIt, setNumberProIt] = useState(1);
     const fakeProId = useRef(0);
-    const [modifyMode, setModifyCode] = useState(true);
     const [productItems, setProductItems] = useState(() => {
         let list = [];
         for (let i = 0; i < numberProIt; i++) {
             list.push({
                 id: fakeProId.current,
                 price: 0,
-                sku: "KSU00001",
+                sku: "KSU0000001",
                 qtyInStock: 0,
                 conditions: {},
                 productConfigurations: [],
@@ -50,14 +51,12 @@ export default function AddProductComponent(props) {
     });
 
 
+
     const [description, setDescription] = useState({ops:[{insert: "\n"}]});
     const [reset, setReset] = useState(0);
 
-
     function refresh() {
-        setCategory(0);
         setVariationOfCategory([]);
-        setProduct({ id: 0, name: "New Product Name" });
         setNumberProIt(1);
         setDescription({ops:[{insert: "\n"}]});
         fakeProId.current = 0;
@@ -67,7 +66,7 @@ export default function AddProductComponent(props) {
                 list.push({
                     id: 0,
                     price: 0,
-                    sku: "KSU00001",
+                    sku: "KSU0000001",
                     qtyInStock: 0,
                     conditions: {},
                     productConfigurations: [],
@@ -92,6 +91,8 @@ export default function AddProductComponent(props) {
         });
     }, [reset]);
 
+
+
     useEffect(() => {
         if (category)
             VariationService.getVariationAlongCategoryId(category).then((response) => {
@@ -100,8 +101,24 @@ export default function AddProductComponent(props) {
             })
     }, [category])
 
+    function openStree(input, output) {
+        output.push(input.id);
+        if (input.parentCategory != null) {
+            openStree(input.parentCategory, output);
+        }
+    }
+
     useEffect(() => {
         props.setActbar("AddProduct");
+        ProductService.getProductById(productId).then(response => {
+            let product = response.data;
+            setProduct(product);
+            setCategory(product.productCategory.id);
+            let output = [];
+            openStree(product.productCategory, output);
+            console.log(output);
+            setTreeCategory(output);
+        })
     }, [])
 
     function setPrice(id) {
@@ -168,11 +185,9 @@ export default function AddProductComponent(props) {
 
     function setProductName(event) {
         setProduct({ ...product, name: event.target.value });
-        if (modifyMode)
-            onModifyMode();
     }
 
-
+    const [modifyMode, setModifyCode] = useState(true);
 
     function onModifyMode() {
         setModifyCode(false);
@@ -185,8 +200,6 @@ export default function AddProductComponent(props) {
     function addNewProductItem() {
         setNumberProIt(numberProIt + 1);
         setProductItems(processAddProIt());
-        if (modifyMode)
-            onModifyMode();
         // fakeProId.current = fakeProId.current + 1;
     }
     function processAddProIt() {
@@ -264,6 +277,8 @@ export default function AddProductComponent(props) {
         result.newImages = [...newImages];
         list[index] = result;
         setProductItems([...list]);
+        if (modifyMode)
+            onModifyMode();
     }
 
     function setExistedImages(id, existedImages) {
@@ -310,32 +325,20 @@ export default function AddProductComponent(props) {
 
 
     function save() {
-        let newProduct = {
-            ...product,
-            productCategory: {
-                id: category
+        ProductService.createProductItem(product.id, productItems).then(response => {
+            let createdProductItems = response.data;
+            let preProIts = preprocessUpdate(product, productItems, createdProductItems);
+            for (let i = 0; i < preProIts.length; i++) {
+                createdProductItems[i].productImages = preProIts[i].existedImages;
+                createdProductItems[i].productConfigurations = preProIts[i].productConfigurations;
             }
-        }
-        ProductService.createProduct(newProduct).then((response) => {
-            let createdProduct = response.data;
-            preprocessDescription(createdProduct.id);
-            UploadFileService.uploadJsonFile("description.json", "/Products/Descriptions/" + createdProduct.id, description).then(response => {
-                console.log("This is description: ", response.data);
-            });
-            ProductService.createProductItem(createdProduct.id, productItems).then(response => {
-                let createdProductItems = response.data;
-                let preProIts = preprocessUpdate(createdProduct, productItems, createdProductItems);
-                for (let i = 0; i < preProIts.length; i++) {
-                    createdProductItems[i].productImages = preProIts[i].existedImages;
-                    createdProductItems[i].productConfigurations = preProIts[i].productConfigurations;
-                }
-                ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
-                    let first = response.data[0].id;
-                    navigate("/administrator/products/productItemsDetail/" + first);
-                })
+            ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
+                let first = response.data[0].id;
+                navigate("/administrator/products/productItemsDetail/" + first);
             })
         });
     }
+
 
     const navigate = useNavigate();
 
@@ -343,22 +346,20 @@ export default function AddProductComponent(props) {
         let track = new Date();
         setReset(track.getTime());
         refresh();
-        if (!modifyMode)
-            offModifyMode();
     }
     return (
         <div className='main-content'>
             <div>
-                <h2 className="title-page"><span><LibraryAddIcon className='icon' />Add Products</span></h2>
+                <h2 className="title-page"><span><LibraryAddIcon className='icon' />Add Product Items</span></h2>
             </div>
             <h5 className='label text-muted'><DriveFileRenameOutlineIcon className='icon' /> Name</h5>
             <div className='new-name'>
                 <span className="name-title">Product Name</span>
-                <input id={"product-name"} onChange={setProductName} placeholder="New Product Name"></input>
+                <input id={"product-name"} onChange={setProductName} value={product.name} placeholder="New Product Name" disabled></input>
             </div>
             <h5 className='label text-muted'><CategoryIcon className='icon' /> Category</h5>
             <div className='category d-flex flex-wrap'>
-                <Category goal="new-product" title="Category" data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
+                <Category goal="new-product" title="Category" value={treeCategory} data={zeroCategory} parent={0} setCategoryId={setCategory}></Category>
             </div>
 
             {
@@ -373,7 +374,7 @@ export default function AddProductComponent(props) {
                                         </div> : <></>
                                 }
                             </h5>
-                            <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)}></Variation>
+                            <Variation goal={"new-product-" + proIt.id + "-variations"} categoryId={category} setConditions={(configuration) => setConfiguration(proIt.id, configuration)} reset={reset}></Variation>
                             <div className="product-modify">
                                 <div className='price d-flex flex-wrap' style={{ alignItems: "center" }}>
                                     <div className='new-price'>
@@ -407,7 +408,7 @@ export default function AddProductComponent(props) {
             </div>
             <h5 className='label text-muted'><DriveFileRenameOutlineIcon className='icon' /> Description</h5>
             <div className='description'>
-                <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} init={"Description"}/>
+                <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} />
             </div>
             <div className='commit d-flex'>
                 <div>

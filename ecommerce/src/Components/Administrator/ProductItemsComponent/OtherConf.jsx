@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState, useEffect, memo } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useNavigation } from 'react-router-dom';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
  function OtherConf(props) {
+    const navigate = useNavigate();
     const [keyVar, setKeyVar] = useState([]); // keyVar = Variation ID (type of variation).
     useEffect(()=>{
       setKeyVar(Object.keys(props.other));
@@ -17,6 +18,9 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
         )
     };
 
+    function goTo(){
+      navigate("/administrator/addProductItem/"+props.productId);
+    }
     const QuickItem = (props) => {
       const navigate = useNavigate();
       const goToTheProductItem = () =>{
@@ -40,8 +44,8 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
           {
             props.productItems.map((productItem, index)=><QuickItem key={index} productItem={productItem}></QuickItem>)
           }
-          <div className='add-new-product'>
-            <AddCircleRoundedIcon fontSize='large' />
+          <div className='add-new-product' onClick={goTo}>
+            <AddCircleRoundedIcon fontSize='large'/>
           </div>
         </div>
       </div>

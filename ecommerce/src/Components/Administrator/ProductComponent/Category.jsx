@@ -7,6 +7,7 @@ import "./Category.css";
 
 const Category = (props) => {
     const [parent, setParent] = useState(props.parent);
+    const [value, setValue] = useState();
     const [selected, setSelected] = useState(0);
     const [children, setChildren] = useState([]);
     let ref = useRef(0);
@@ -35,6 +36,11 @@ const Category = (props) => {
     useEffect(()=>{
         setSelected(0);
         setParent(props.parent);
+        if(props.value && props.value.length > 0){
+            let value = [...props.value];
+            setSelected(value.pop());
+            setValue(value);
+        }
     },[props]);
 
     function selectCategory() {
@@ -51,7 +57,7 @@ const Category = (props) => {
             <>
                 <div className='select d-flex align-items-center white'>
                     <span className='category-title'>{props.title}</span> 
-                    <select ref={ref} onChange={selectCategory} value={selected}>
+                    <select ref={ref} onChange={selectCategory} value={selected} disabled = {props.value?true:false}>
                         {
                             props.data.map((value, index) => <option className='select-item' key={index} value={value.id}>{value.categoryName}</option>)
                         }
@@ -60,7 +66,7 @@ const Category = (props) => {
                 {
                     children.length > 0
                     ?
-                    <Category goal={props.goal} title="Sub-Category" data={children} parent={selected} setCategoryId={props.setCategoryId}></Category>
+                    <Category goal={props.goal} title="Sub-Category" value={value} data={children} parent={selected} setCategoryId={props.setCategoryId}></Category>
                     : (<></>)
                 }
             </>

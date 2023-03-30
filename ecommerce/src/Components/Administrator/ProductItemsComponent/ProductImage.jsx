@@ -6,10 +6,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 export default function ProductImage(props) {
     const [imagesList, setImagesList] = useState(props.imagesList);
     const [newImages, setNewImages] = useState(props.newImages);
+    const [productName, setProductName] = useState(props.product.name)
     const fakeId = useRef(0);
     useEffect(() => {
         setImagesList(props.imagesList);
         setNewImages(props.newImages);
+        setProductName(props.product.name);
     }, [props.product, props.productItem, props.imagesList, props.newImages])
 
     useEffect(() => {
@@ -77,8 +79,11 @@ export default function ProductImage(props) {
         reader.onload = function (e) {
             newImage["id"] = fakeId.current;
             fakeId.current += 1;
-            newImage["name"] = props.product.name + new Date().getTime(); // set name of a new image.
+            // newImage["name"] = productName + new Date().getTime(); // set name of a new image.
             newImage['needSave'] = true;
+            let fileName = file.name;
+            fileName = fileName.substring(0,fileName.lastIndexOf("."));
+            newImage["name"] = fileName;
             let extension = file.name;
             extension = extension.substring(extension.lastIndexOf(".") + 1); // get extension from file name.
             newImage['extension'] = extension;

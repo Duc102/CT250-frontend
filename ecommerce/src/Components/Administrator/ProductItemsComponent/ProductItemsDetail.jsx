@@ -286,7 +286,6 @@ export default function ProductItemsDetail() {
 
   // Delete a product
   function quickDelete() {
-
     setConfirmDialog({
       isOpen: true,
       title: "Are you sure delete this product item?",
@@ -368,7 +367,7 @@ export default function ProductItemsDetail() {
             </div>
             <button className='btn btn-light qty' style={{ margin: "3px", width: "40px" }} onClick={() => changeQtyInStock(-1)}>-</button>
           </div>
-          <Variation goal="modify-new-config" categoryId={categoryId} setConditions={changeConfig} init={modifyConfig}></Variation>
+          <Variation goal="modify-new-config" categoryId={categoryId} setConditions={changeConfig} init={modifyConfig} reset={reset}></Variation>
         </div>
       </div>
 
@@ -387,7 +386,7 @@ export default function ProductItemsDetail() {
       </div>
       <div className="section-line"> OTHER PRODUCT ITEM </div>
       <div>
-        <OtherConf other={otherConfig} selected={selectedOtherVarOp} fun={selectAnotherProductItem} productItems={otherProductItems} />
+        <OtherConf other={otherConfig} selected={selectedOtherVarOp} fun={selectAnotherProductItem} productItems={otherProductItems} productId={product.id} />
       </div>
       <AlertNote notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog}></ConfirmDialog>

@@ -24,6 +24,10 @@ class ProductService {
         return await axios.get(PRODUCT_BASE_URL + "/productItem/" +productItemId + "/info");
     }
 
+    getProductById(id){
+        return axios.get(PRODUCT_BASE_URL +"/"+id);
+    }
+
     getProductItemByCategoryId(categoryId){
         return axios.get(PRODUCT_BASE_URL + "/productItem/category/" + categoryId);
     }

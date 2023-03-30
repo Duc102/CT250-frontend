@@ -16,7 +16,7 @@ const OrdersTable = (props) => {
                 </thead>
                 <tbody>
                     {   
-                        props.todayOrders?.lenght > 0?
+                        props.todayOrders?.length > 0?
                         props.todayOrders?.map((order, index)=>
                             <tr key={index}>
                                 <td>{index+1}</td>
