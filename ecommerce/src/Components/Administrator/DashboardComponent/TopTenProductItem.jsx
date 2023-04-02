@@ -42,31 +42,42 @@ const TopTenProductItem = () => {
     }
 
     function filter() {
-        let date = document.getElementById("top-ten-date-value").value;
+        let el = document.getElementById("top-ten-date-value");
+        let date = el.value;
         let dateTime = new Date(date);
-        let utc = new Date(Date.UTC(dateTime.getFullYear(),
-            dateTime.getMonth(),
-            dateTime.getDate(),
-            dateTime.getHours(),
-            dateTime.getMinutes(),
-            dateTime.getSeconds()));
-        getTopTen(parseInt(utc.getMonth()) + 1, parseInt(utc.getFullYear()));
-
+        // let utc = new Date(Date.UTC(dateTime.getFullYear(),
+        //     dateTime.getMonth(),
+        //     dateTime.getDate(),
+        //     dateTime.getHours(),
+        //     dateTime.getMinutes(),
+        //     dateTime.getSeconds()));
+        // getTopTen(parseInt(utc.getMonth()) + 1, parseInt(utc.getFullYear()));
+        let month = parseInt(dateTime.getMonth()) + 1;
+        let value = dateTime.getFullYear() + "-" + (month > 10 ? month : "0" + month.toString());
+        el.value = value;
+        getTopTen(parseInt(dateTime.getMonth()) + 1, parseInt(dateTime.getFullYear()));
     }
 
     function init() {
         let dateTime = new Date();
         let el = document.getElementById("top-ten-date-value");
-        let utc = new Date(Date.UTC(dateTime.getFullYear(),
-            dateTime.getMonth(),
-            dateTime.getDate(),
-            dateTime.getHours(),
-            dateTime.getMinutes(),
-            dateTime.getSeconds()));
-        let month = parseInt(utc.getMonth()) + 1;
-        let value = utc.getFullYear() + "-" + (month > 10 ? month : "0" + month.toString());
+        // let utc = new Date(Date.UTC(dateTime.getFullYear(),
+        //     dateTime.getMonth(),
+        //     dateTime.getDate(),
+        //     dateTime.getHours(),
+        //     dateTime.getMinutes(),
+        //     dateTime.getSeconds()));
+        // let month = parseInt(utc.getMonth()) + 1;
+        // let value = utc.getFullYear() + "-" + (month > 10 ? month : "0" + month.toString());
+        // el.value = value;
+        // getTopTen(parseInt(utc.getMonth()) + 1, parseInt(utc.getFullYear()));
+
+        let month = parseInt(dateTime.getMonth()) + 1;
+        let value = dateTime.getFullYear() + "-" + (month > 10 ? month : "0" + month.toString());
         el.value = value;
-        getTopTen(parseInt(utc.getMonth()) + 1, parseInt(utc.getFullYear()));
+        getTopTen(parseInt(dateTime.getMonth()) + 1, parseInt(dateTime.getFullYear()));
+
+
     }
 
     return (

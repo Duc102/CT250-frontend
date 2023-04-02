@@ -16,13 +16,15 @@ export default function LazyComponent(props) {
             ProductServices.getProductItemByCategoryId(props.category).then(response=>{
                 setProductItems(response.data);
             })
+        } else if(props.productItems){
+            setProductItems([...props.productItems]);
         }
-    },[])
+    },[props])
     
   return (
-    <div className='bg-primary w-100 mt-1' style={{minHeight: "120px"}}>
+    <div className='w-100 mt-1' style={{minHeight: "120px"}}>
         <HeaderContent title={props.title}></HeaderContent>
-        <div className='row'>
+        <div className='lazy-container'>
             {
                 productItems?
                 productItems.map((productItem, index)=> <ProductItem key={index} productItem={productItem}/>)

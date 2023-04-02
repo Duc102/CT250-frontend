@@ -50,6 +50,10 @@ class ShopOderService {
     deleteShopOrder(id){
         return axios.get(ORDER_BASE_URL+"/quickDeleteOrder/"+id)
     }
+
+    getTopTenProductItems(month, year){
+        return axios.get(ORDER_BASE_URL+"/topTenProductItems/"+month+"/"+year);
+    }
 }
 
 export default new ShopOderService();

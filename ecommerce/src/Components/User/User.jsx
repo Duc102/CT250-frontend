@@ -10,6 +10,7 @@ import Login from './AuthenticationComponent/Login'
 
 import UserContext from './UserContext'
 import ShoppingCartService from '../../Services/CommonService/ShoppingCartService'
+import ItemDetail from './ProductItemDetailComponent/ItemDetail'
 
 export default function User() {
   const [siteUser, setSiteUser] = useState({
@@ -46,6 +47,7 @@ export default function User() {
         <Routes>
           <Route path='/' element={<Body user={siteUser} />}></Route>
           <Route path='/shoppingCart' element={<ShoppingCart />}></Route>
+          <Route path='/productItemDetail/:id' element={<ItemDetail />}></Route>
           <Route path='/another' element={<h1>Another</h1>}></Route>
           <Route path='/register' element={<Register />}></Route>
           <Route path='/login' element={<Login exe={setSiteUser} />}></Route>

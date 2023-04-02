@@ -1,4 +1,5 @@
 import React from 'react'
+import {useContext} from 'react'
 import { NavLink } from 'react-router-dom'
 import logo from "./Images/logo.png"
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,6 +9,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import UserContext from './UserContext';
 
 import { Dropdown } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
@@ -15,8 +17,20 @@ import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import {Button} from "react-bootstrap"
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 export default function Header() {
+
+  const context = useContext(UserContext);
+  const shoppingCart = context.shoppingCart;
+
   const submit = (event) => {
     event.preventDefault();
+  }
+
+  function howManyProductItems(){
+    let howMany = 0;
+    shoppingCart.shoppingCartItems?.forEach(line => {
+      howMany += line.qty;
+    });
+    return howMany;
   }
 
   return (
@@ -54,7 +68,7 @@ export default function Header() {
               <button className='btn btn-dark' type="submit"><SearchIcon /></button>
             </form>
           </div>
-          <NavLink to="/shoppingCart" className="btn btn-dark ms-2"><ShoppingCartIcon /></NavLink>
+          <NavLink to="/shoppingCart" className="btn btn-dark ms-2" style={{position: "relative"}}><ShoppingCartIcon /> <span style={{position: "absolute", top: "-12px", right: "-5px", borderRadius: "50%", width: "25px", height: "24px", display:"inline-block", backgroundColor: "red"}}>{howManyProductItems()}</span></NavLink>
           <Button variant="dark ms-2"><NotificationsIcon/></Button>
           <Dropdown>
             <DropdownToggle variant='dark ms-2'><PersonIcon /></DropdownToggle>

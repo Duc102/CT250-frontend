@@ -52,7 +52,6 @@ const ShopOrder = (props) => {
         if (dateTime.getDate())
             ShopOrderService.getShopOrderInDateTime(utc).then(response => {
                 setOrders(response.data);
-                console.log(response.data);
             })
     }
 
@@ -60,30 +59,24 @@ const ShopOrder = (props) => {
     function getAllShopOrders() {
         ShopOrderService.getAllShopOrders().then(response => {
             setOrders(response.data);
-            console.log(response.data);
         });
     }
 
     function getShopOrderByOrderStatus(id) {
         ShopOrderService.getShopOrderByOrderStatus(id).then(response => {
             setOrders(response.data);
-            console.log(response.data);
         });
 
     }
 
     function getShopOrderById(id) {
         ShopOrderService.getShopOrderById(id).then(response => {
-            setOrders([response.data]);
+            if(response.data !== "")
+                setOrders([response.data]);
+            else setOrders([]);
         });
     }
 
-    function getAllOrderStatus() {
-        ShopOrderService.getAllOrderStatus().then(response => {
-            console.log(response.data);
-        });
-
-    }
     return (
         <div className='main-content'>
             <div>
@@ -109,7 +102,7 @@ const ShopOrder = (props) => {
             </div>
             <div className='d-flex align-item-center' style={{flexWrap: "wrap"}}>
                 <div className='search-box'>
-                    <input id="search-value" type="search" placeholder='Search order by id ...'></input>
+                    <input id="search-value" type="number" placeholder='Search order by id ...'></input>
                     <span className="icon" onClick={search}><SearchIcon style={{ color: "white" }} /></span>
                 </div>
                 <div className='search-box'>

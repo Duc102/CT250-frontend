@@ -1,7 +1,10 @@
 import React from 'react';
 import {useEffect, useState, useContext} from 'react';
 import ShoppingCartService from '../../../Services/CommonService/ShoppingCartService';
+import ProductService from "../../../Services/CommonService/ProductService"
+import {executeFullNamForProductItem} from "../../Administrator/Execute"
 import UserContext from '../UserContext';
+import { DeleteRounded } from '@mui/icons-material';
 
 const ProductItemLine = (props) => {
     
@@ -9,6 +12,13 @@ const ProductItemLine = (props) => {
     const context = useContext(UserContext);
     const setShoppingCart = context.setShoppingCart;
     const shoppingCart = context.shoppingCart;
+    const [product, setProduct] = useState({name: "Product Name"});
+
+    useEffect(()=>{
+        ProductService.getProductByProductItemId(props.productLine.productItem.id).then(res=>{
+            setProduct(res.data);
+        });
+    },[])
     
     function calSum(){
        return props.productLine.productItem.price * props.productLine.qty
@@ -28,6 +38,7 @@ const ProductItemLine = (props) => {
           }
         ShoppingCartService.updateShoppingCartItem(shoppingCartItem).then(response=>{
             console.log("Update Result",response.data);
+            deleteProductItems();
         })
     }
 
@@ -58,22 +69,22 @@ const ProductItemLine = (props) => {
             <td className='text-center'>
                 <img src={props.productLine.productItem.productImages[0].url} width="100px"></img>
             </td>
-            <td className='text-center'>Product name</td>
+            <td className='text-center' style={{whiteSpace: "normal"}}>{executeFullNamForProductItem(product, props.productLine.productItem)}</td>
             <td className='text-center price-color'>
             {Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(props.productLine.productItem.price)}
             </td>
             <td className='text-center' style={{whiteSpace: "nowrap"}}>
-                <button onClick={()=>changeQty(1)}>+</button>
-                <span>
+                <button className='btn btn-light ms-1' onClick={()=>changeQty(1)}>+</button>
+                <span  className='btn btn-light ms-1 me-1'>
                     {props.productLine.qty}
                 </span>
-                <button onClick={()=>changeQty(-1)}>-</button>
+                <button className='btn btn-light me-1' onClick={()=>changeQty(-1)}>-</button>
             </td>
             <td className='text-center price-color'>
                 {Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(calSum())}
             </td>
             <td>
-                <button onClick={deleteProductItems}>Del</button>
+                <button className='btn btn-danger' onClick={deleteProductItems}><DeleteRounded></DeleteRounded></button>
             </td>
         </tr>
     );

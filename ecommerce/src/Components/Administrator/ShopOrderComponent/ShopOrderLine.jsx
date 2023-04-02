@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ShopOrderService from '../../../Services/CommonService/ShopOrderService';
@@ -93,4 +93,4 @@ const ShopOrderLine = (props) => {
     );
 }
 
-export default ShopOrderLine;
+export default memo(ShopOrderLine);

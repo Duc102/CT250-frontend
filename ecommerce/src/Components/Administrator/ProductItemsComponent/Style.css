@@ -370,11 +370,13 @@ input.hidden {
     margin-top: 1rem;
 }
 
+
+
+
 .otherConfig .other-item img{
     width: 200px;
     height: 200px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 5px;
     border-radius: 6px;
     object-fit: contain;
 }

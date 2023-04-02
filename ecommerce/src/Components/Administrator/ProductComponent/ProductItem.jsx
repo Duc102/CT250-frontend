@@ -18,7 +18,6 @@ export default function ProductItem(props) {
     const [priceSpanClass, setPriceSpanClass] = useState('form-control price-lg');
     const [modifyMode, setModifyCode] = useState(true);
 
-
     const qty = useRef(0);
     const pri = useRef(0);
 

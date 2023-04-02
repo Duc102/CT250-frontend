@@ -1,0 +1,56 @@
+.other-item-container{
+    overflow: scroll;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.other-item-container::-webkit-scrollbar{
+    display: none;
+}
+
+.other-item-container img {
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+    border-radius: 6px;
+    object-fit: contain;
+}
+
+.other-item-container img:hover {
+    outline: 1px red solid;
+    box-shadow: 0px 0px 9px red;
+}
+
+.price-lg-detail {
+    font-size: 2.875rem;
+    color: rgb(0,255,0);
+}
+
+.user-descriptions {
+    margin: 5px;
+    margin-top: 0px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.user-descriptions .ql-editor {
+    background-color: #212529;  
+}
+
+.user-descriptions.ql-container.ql-snow{
+    border: none;
+}
+
+.des-container .ql-toolbar.ql-snow{
+    display: none;
+}
+
+.user-descriptions .ql-editor img {
+    margin: auto;
+    display: inline-block;
+    max-width: 90%;
+    max-height: 450px;
+}
+
