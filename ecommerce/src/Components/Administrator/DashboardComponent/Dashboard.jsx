@@ -11,7 +11,8 @@ import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 import "./Dashboard.css"
 import OrdersTable from './OrdersTable';
 import TopTenProductItem from './TopTenProductItem';
-import { MonetizationOnOutlined, Topic } from '@mui/icons-material';
+import { MonetizationOnOutlined, Storage, Topic } from '@mui/icons-material';
+import Inventory from './Inventory';
 
 const Dashboard = (props) => {
 
@@ -49,6 +50,8 @@ const Dashboard = (props) => {
             <OrdersTable todayOrders={todayOrders}/>
             <h5 className='label text-muted'><Topic className='icon' /> Top Selling Products</h5>
             <TopTenProductItem />
+            <h5 className='label text-muted'><Storage className='icon' /> Inventory</h5>
+            <Inventory/>
             <h5 className='label text-muted'><MonetizationOnOutlined className='icon text-success' /> Revenue In The Year</h5>
             <OrdersMoneyChart />
         </div>

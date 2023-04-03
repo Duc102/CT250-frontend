@@ -24,7 +24,7 @@ const OrdersTable = (props) => {
                                 <td className='price-color'>
                                 {Intl.NumberFormat('en-US', {style: "currency", currency: "USD"}).format(order.orderTotal)}
                                 </td>
-                                <td>
+                                <td className='p-2'>
                                     <NavLink to={"orders/"+order.id+"/detail"}><InfoIcon/></NavLink>
                                 </td>
                             </tr>

@@ -14,14 +14,17 @@ export default function ShoppingCart() {
 
   const siteUser = context.siteUser;
   const shoppingCart = context.shoppingCart;
+  const setShoppingCart = context.setShoppingCart;
 
   function pay() {
-    ShopOrderService.createNewShopOders(siteUser, shoppingCart.shoppingCartItems, siteUser.addresses[0].address).then(response => {
-      console.log(response.data);
-    });
+    if (shoppingCart.shoppingCartItems.length > 0)
+      ShopOrderService.createNewShopOders(siteUser, shoppingCart.shoppingCartItems, siteUser.addresses[0].address).then(response => {
+        console.log(response.data);
+        setShoppingCart({ ...shoppingCart, shoppingCartItems: [] });
+      });
   }
 
-  function totalPay(){
+  function totalPay() {
     let price = 0;
     shoppingCart.shoppingCartItems?.forEach(line => {
       price += line.qty * line.productItem.price;
@@ -29,7 +32,7 @@ export default function ShoppingCart() {
     return price;
   }
 
-  function howManyProductItems(){
+  function howManyProductItems() {
     let howMany = 0;
     shoppingCart.shoppingCartItems?.forEach(line => {
       howMany += line.qty;
@@ -57,7 +60,12 @@ export default function ShoppingCart() {
           </thead>
           <tbody>
             {
-              shoppingCart.shoppingCartItems?.map((productItem, index) => <ProductItemLine key={index} no={index} productLine={productItem} cartId={shoppingCart.id} />)
+              shoppingCart.shoppingCartItem?.length > 0 ?
+                shoppingCart.shoppingCartItems?.map((productItem, index) => <ProductItemLine key={index} no={index} productLine={productItem} cartId={shoppingCart.id} />)
+                :
+                <tr>
+                  <td colSpan={7} className='p-2'>We don't have any product items in this cart!</td>
+                </tr>
             }
           </tbody>
           <tfoot>
@@ -71,7 +79,7 @@ export default function ShoppingCart() {
           </tfoot>
         </table>
       </div>
-      
+
     </Container>
   )
 }

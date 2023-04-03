@@ -10,6 +10,10 @@ class DashboardService {
     getTopTenProductItems(month, year){
         return axios.get(DASHBOARD_BASE_URL+"/topTenProductItems/"+month+"/"+year);
     }
+
+    getInventroy(){
+        return axios.get(DASHBOARD_BASE_URL+"/inventory");
+    }
 }
 
 export default new DashboardService()
