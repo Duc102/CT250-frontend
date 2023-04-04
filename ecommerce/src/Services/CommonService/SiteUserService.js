@@ -15,6 +15,22 @@ class SiteUserService {
     countSiteUser(){
         return axios.get(SITEUSER_BASE_URL+"/countSiteUser");
     }
+
+    getAllSiteUsers(){
+        return axios.get(SITEUSER_BASE_URL + "/allSiteUsers");
+    }
+
+    getSiteUsersByName(name){
+        return axios.get(SITEUSER_BASE_URL + "/getSiteUsersByName/"+name);
+    }
+
+    getSiteUserById(id){
+        return axios.get(SITEUSER_BASE_URL + "/getSiteUserById/"+id);
+    }
+
+    deleteSiteUser(id){
+        return axios.delete(SITEUSER_BASE_URL+"/deleteSiteUser/"+id);
+    }
 }
 
 export default new SiteUserService();

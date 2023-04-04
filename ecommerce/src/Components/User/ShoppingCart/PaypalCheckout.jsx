@@ -5,7 +5,6 @@ const PaypalCheckout = (props) => {
     const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState(null);
     const handleApprove = (orderId) => {
-        
         setPaidFor(true);
         props.afterPay();
     }

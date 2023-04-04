@@ -75,10 +75,6 @@ const ShopOrderDetail = () => {
     }
 
     function deleteShopOrder(){
-        // ShopOrderService.deleteShopOrder(order.id).then(response=>{
-        //     console.log("Delete Result: ", response.data);
-        //     navigate("/administrator/orders");
-        // })
         setConfirmDialog({
             isOpen: true,
             title: "Are you sure delete this order?",

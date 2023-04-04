@@ -10,7 +10,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InfoIcon from '@mui/icons-material/Info';
 
 const ShopOrderLine = (props) => {
-    const [order, setOrders] = useState(props.order);
+    const [order, setOrder] = useState(props.order);
     const context = useContext(OrdersContext);
     const orders = context.orders;
     const updateOrders = context.setOrders;
@@ -19,7 +19,7 @@ const ShopOrderLine = (props) => {
 
     const navigate = useNavigate();
     useEffect(() => {
-        setOrders(props.order);
+        setOrder(props.order);
     }, [props])
 
     function processDate(dateTime) {
@@ -32,7 +32,7 @@ const ShopOrderLine = (props) => {
     function changeOrderStatus(event) {
         let select = event.currentTarget.value;
         let status = props.status.filter(st => parseInt(st.id) === parseInt(select));
-        setOrders({ ...order, orderStatus: status[0] });
+        setOrder({ ...order, orderStatus: status[0] });
     }
 
     function quickUpdateOrderStatus() {

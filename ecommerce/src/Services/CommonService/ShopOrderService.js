@@ -27,6 +27,10 @@ class ShopOderService {
         return axios.get(ORDER_BASE_URL+"/getShopOrder/"+id);
     }
 
+    getAllShopOrdersByUserId(id){
+        return axios.get(ORDER_BASE_URL+"/getAllShopOrdersByUserId/"+id);
+    }
+
     getShopOrderInDateTime(dateTime){
         return axios.post(ORDER_BASE_URL+"/getShopOrder/dateTime", dateTime);
     }
