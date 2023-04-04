@@ -2,8 +2,29 @@
     width: 100%;
 }
 
-/* .hidden-spin::-webkit-inner-spin-button,
-.hidden-spin::-webkit-outer-spin-button{
-    -webkit-appearance: none;
-    margin: 0;
-} */
+.payment-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.payment-container .method {
+    border-radius: 30px;
+    margin-right: 5px;
+    height: 48px;
+}
+
+.payment-container .pay {
+    border-radius: 30px;
+    height: 48px;
+    width: 150px;
+}
+
+.payment-container .method select {
+    max-width: max-content;
+    border: none;
+}
+
+.paypal div>div[id*="zoid-paypal-buttons-uid"] {
+    display: block !important;
+}

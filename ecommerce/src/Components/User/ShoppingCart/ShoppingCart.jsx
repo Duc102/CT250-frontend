@@ -1,9 +1,10 @@
 import React from 'react'
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import ShoppingCartService from '../../../Services/CommonService/ShoppingCartService'
 import ShopOrderService from '../../../Services/CommonService/ShopOrderService'
 import ProductItemLine from './ProductItemLine'
+import PaypalCheckout from "./PaypalCheckout"
 import "./ShoppingCart.css"
 import UserContext from '../UserContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
@@ -11,7 +12,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 export default function ShoppingCart() {
 
   const context = useContext(UserContext);
+  const [payment, setPayment] = useState(1);
 
+  function changePaymentMethod(event) {
+    let value = event.currentTarget.value;
+    setPayment(value);
+    console.log(value);
+  }
   const siteUser = context.siteUser;
   const shoppingCart = context.shoppingCart;
   const setShoppingCart = context.setShoppingCart;
@@ -60,7 +67,7 @@ export default function ShoppingCart() {
           </thead>
           <tbody>
             {
-              shoppingCart.shoppingCartItem?.length > 0 ?
+              shoppingCart.shoppingCartItems?.length > 0 ?
                 shoppingCart.shoppingCartItems?.map((productItem, index) => <ProductItemLine key={index} no={index} productLine={productItem} cartId={shoppingCart.id} />)
                 :
                 <tr>
@@ -73,11 +80,27 @@ export default function ShoppingCart() {
               <td className='p-2 fw-bold'> Number </td>
               <td className='p-2 fst-italic' colSpan={2}> {howManyProductItems()} product item (s)</td>
               <td className='p-2 fw-bold'> Total </td>
-              <td className='price-color p-2' colSpan={2} >{Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(totalPay())}</td>
-              <td className='p-2'><button className="btn btn-success" onClick={pay}>Pay</button></td>
+              <td className='price-color p-2' colSpan={3} >{Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(totalPay())}</td>
+
             </tr>
           </tfoot>
         </table>
+        <div className="payment-container mt-1">
+          <div className='method bg-white p-1 ps-2 pe-2'>
+            <span className='fw-bold'>Payment Method</span>
+            <select value={payment} onChange={(event) => changePaymentMethod(event)}>
+              <option value={1}>Pay at home</option>
+              <option value={2}>Online payment</option>
+            </select>
+          </div>
+          <div>
+            {
+              Number(payment) === 1
+                ? <button className="btn btn-success pay" onClick={pay}>Pay</button>
+                : <PaypalCheckout description={"Payment"} getPrice={totalPay} afterPay={pay}></PaypalCheckout>
+            }
+          </div>
+        </div>
       </div>
 
     </Container>

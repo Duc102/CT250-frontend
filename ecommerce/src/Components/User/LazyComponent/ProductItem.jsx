@@ -59,12 +59,16 @@ const ProductItem = (props) => {
         if(ss.length > 0){
             ss[0].qty += 1;
             ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response=>{
-                setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
+                // setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
             })
-        } else
+            setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
+        } else{
             ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response=>{
-                setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
+                // setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
             })
+            setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
+        }
+            
     }
 
     if (product)

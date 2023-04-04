@@ -69,7 +69,7 @@ const ProductItemLine = (props) => {
             <td className='text-center'>
                 <img src={props.productLine.productItem.productImages[0].url} width="100px"></img>
             </td>
-            <td className='text-center' style={{whiteSpace: "normal"}}>{executeFullNamForProductItem(product, props.productLine.productItem)}</td>
+            <td className='text-center' style={{whiteSpace: "normal", maxWidth: "225px"}}>{executeFullNamForProductItem(product, props.productLine.productItem)}</td>
             <td className='text-center price-color'>
             {Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(props.productLine.productItem.price)}
             </td>

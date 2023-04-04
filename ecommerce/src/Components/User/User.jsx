@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import Header from './Header'
 import Body from './Body'
 import ShoppingCart from './ShoppingCart/ShoppingCart'
@@ -22,38 +23,41 @@ export default function User() {
     id: 0,
   })
 
-  useEffect(()=>{
-    if(window.localStorage.getItem("siteUser") == null) {
+  useEffect(() => {
+    if (window.localStorage.getItem("siteUser") == null) {
       window.localStorage.setItem("siteUser", JSON.stringify(siteUser));
     } else {
       setSiteUser(JSON.parse(window.localStorage.getItem("siteUser")));
     }
-  },[])
-  
-  useEffect(()=>{
-    if(siteUser.id){
+  }, [])
+
+  useEffect(() => {
+    if (siteUser.id) {
       console.log(siteUser);
       window.localStorage.setItem("siteUser", JSON.stringify(siteUser));
-        ShoppingCartService.getShoppingCartByUserId(siteUser.id).then(response=>{
-          setShoppingCart(response.data);
-          console.log("Load shopping cart when login ", response.data);
-        })
+      ShoppingCartService.getShoppingCartByUserId(siteUser.id).then(response => {
+        setShoppingCart(response.data);
+        console.log("Load shopping cart when login ", response.data);
+      })
     }
-  },[siteUser])
+  }, [siteUser])
   return (
-    <div className="container">
-      <UserContext.Provider value={{siteUser: siteUser, shoppingCart: shoppingCart, setShoppingCart: setShoppingCart}}>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Body user={siteUser} />}></Route>
-          <Route path='/shoppingCart' element={<ShoppingCart />}></Route>
-          <Route path='/productItemDetail/:id' element={<ItemDetail />}></Route>
-          <Route path='/another' element={<h1>Another</h1>}></Route>
-          <Route path='/register' element={<Register />}></Route>
-          <Route path='/login' element={<Login exe={setSiteUser} />}></Route>
-        </Routes>
-        <Footer />
-      </UserContext.Provider>
-    </div>
+    <PayPalScriptProvider options={{'client-id': 'AcTNYTNbAI4aec7RTprvYmE5PDuestOTtOccvQWjL-tfFc91XAXPd8x2zhgUgZz6ftI4crwINV5BPPmD', locale: 'en_US', "disable-funding": 'card'}}>
+      <div className="container">
+        <UserContext.Provider value={{ siteUser: siteUser, shoppingCart: shoppingCart, setShoppingCart: setShoppingCart }}>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Body user={siteUser} />}></Route>
+            <Route path='/shoppingCart' element={<ShoppingCart />}></Route>
+            <Route path='/productItemDetail/:id' element={<ItemDetail />}></Route>
+            <Route path='/another' element={<h1>Another</h1>}></Route>
+            <Route path='/register' element={<Register />}></Route>
+            <Route path='/login' element={<Login exe={setSiteUser} />}></Route>
+          </Routes>
+          <Footer />
+        </UserContext.Provider>
+      </div>
+    </PayPalScriptProvider>
+
   )
 }
