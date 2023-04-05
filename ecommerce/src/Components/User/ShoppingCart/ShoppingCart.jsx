@@ -8,24 +8,36 @@ import PaypalCheckout from "./PaypalCheckout"
 import "./ShoppingCart.css"
 import UserContext from '../UserContext'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import PaymentService from '../../../Services/CommonService/PaymentService'
 
 export default function ShoppingCart() {
 
   const context = useContext(UserContext);
-  const [payment, setPayment] = useState(1);
+  const [payment, setPayment] = useState({id: 1});
+  const [paymentMethods, setPaymentMethods] = useState([]);
+
+  useEffect(()=>{
+      PaymentService.getAllPaymentMethod().then(res=>{
+          console.log(res.data);
+          setPaymentMethods(res.data);
+          setPayment(res.data[0]);
+      });
+  },[])
 
   function changePaymentMethod(event) {
     let value = event.currentTarget.value;
-    setPayment(value);
-    console.log(value);
+    let pay = paymentMethods.filter(p => Number(p.id) === Number(value));
+    pay = pay[0];
+    setPayment(pay);
   }
+
   const siteUser = context.siteUser;
   const shoppingCart = context.shoppingCart;
   const setShoppingCart = context.setShoppingCart;
 
   function pay() {
     if (shoppingCart.shoppingCartItems.length > 0)
-      ShopOrderService.createNewShopOders(siteUser, shoppingCart.shoppingCartItems, siteUser.addresses[0].address).then(response => {
+      ShopOrderService.createNewShopOders(siteUser, shoppingCart.shoppingCartItems, siteUser.addresses[0].address, payment).then(response => {
         console.log(response.data);
         setShoppingCart({ ...shoppingCart, shoppingCartItems: [] });
       });
@@ -88,14 +100,17 @@ export default function ShoppingCart() {
         <div className="payment-container mt-1">
           <div className='method bg-white p-1 ps-2 pe-2'>
             <span className='fw-bold'>Payment Method</span>
-            <select value={payment} onChange={(event) => changePaymentMethod(event)}>
-              <option value={1}>Pay at home</option>
-              <option value={2}>Online payment</option>
+            <select value={payment.id} onChange={(event) => changePaymentMethod(event)}>
+              {
+                paymentMethods.length > 0
+                ? paymentMethods.map((p, index)=><option key={index} value={p.id}>{p.name}</option>)
+                : <option value={0}>No</option>
+              }
             </select>
           </div>
           <div>
             {
-              Number(payment) === 1
+              Number(payment.id) === 1
                 ? <button className="btn btn-success pay" onClick={pay}>Pay</button>
                 : <PaypalCheckout description={"Payment"} getPrice={totalPay} afterPay={pay}></PaypalCheckout>
             }

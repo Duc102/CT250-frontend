@@ -23,7 +23,7 @@ export default function MainComponent(props) {
             <Route path='/addProduct' element={<AddProductComponent setActbar={props.setActbar}/>}></Route>
             <Route path='/addProductItem/:productId' element={<AddProductItem setActbar={props.setActbar}/>}></Route>
             <Route path='/orders' element={<ShopOrder setActbar={props.setActbar}/>}></Route>
-            <Route path="/orders/:id/detail" element={<ShopOrderDetail setActbar={props.setActbar}/>}></Route>
+            <Route path="/orders/:id/detail" element={<ShopOrderDetail setActbar={props.setActbar} role="admin"/>}></Route>
             <Route path='/users' element={<AllUsers setActbar={props.setActbar}/>}></Route>
             <Route path='/users/:id/detail' element={<SiteUserDetail setActbar={props.setActbar}/>}></Route>
         </Routes>

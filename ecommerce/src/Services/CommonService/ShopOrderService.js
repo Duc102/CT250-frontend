@@ -4,11 +4,12 @@ const ORDER_BASE_URL = "http://localhost:8080/administrator/orders";
 
 class ShopOderService {
 
-    createNewShopOders(siteUser, shoppingCartItems, address){
+    createNewShopOders(siteUser, shoppingCartItems, address, payment){
         let dto = {
             siteUser: siteUser,
             shoppingCartItems: [...shoppingCartItems],
-            address: address
+            address: address,
+            payment: payment
         }
         return axios.post(ORDER_BASE_URL +"/createNewShopOrder", dto);
     }

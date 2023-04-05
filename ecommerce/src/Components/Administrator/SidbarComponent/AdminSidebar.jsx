@@ -56,7 +56,7 @@ const AdminSidbar = (props) =>{
   return (
     <nav className={sidebarClass}>
         <header>
-            <span className="image"><img src={Logo} alt="logo"></img></span>
+            <span className="image"><NavLink to={"/"}><img src={Logo} alt="logo"></img></NavLink></span>
             <KeyboardArrowRightIcon className='toggle' onClick={clickOnToggleButton}/>
         </header>
         <div className="menu-bar">

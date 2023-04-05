@@ -88,6 +88,14 @@
     align-items: center;
 }
 
+.order-list {
+    overflow-x: scroll;
+}
+
+.order-list::-webkit-scrollbar{
+    display: none;
+}
+
 .order-list table {
     width: 100%;
     border-collapse: collapse;
@@ -156,7 +164,7 @@
 }
 
 .order-list select {
-    max-width: 120px;
+    width: 120px;
     padding: 0.375rem 0.375rem 0.375rem 0.375rem;
     margin: 3px;
     flex-grow: 1;

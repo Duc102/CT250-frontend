@@ -35,6 +35,14 @@ const AllUsers = (props) => {
             else setSiteUsers([]);
         });
     }
+    
+    function clearName(){
+        document.getElementById("user-name-value").value="";
+    }
+
+    function clearId(){
+        document.getElementById("user-id-value").value="";
+    }
     return (
         <div className='main-content'>
             <div>
@@ -44,11 +52,11 @@ const AllUsers = (props) => {
             
             <div className='d-flex align-item-center' style={{flexWrap: "wrap"}}>
                 <div className='search-box'>
-                    <input id="user-id-value" type="number" placeholder='Search user by id ...'></input>
+                    <input id="user-id-value" onClick={clearName} type="number" placeholder='Search user by id ...'></input>
                     <span className="icon" onClick={searchById}><Search style={{ color: "white" }} /></span>
                 </div>
                 <div className='search-box'>
-                    <input id="user-name-value" type='search' placeholder='Search user by name ...'></input>
+                    <input id="user-name-value" onClick={clearId} type='search' placeholder='Search user by name ...'></input>
                     <span className="icon" onClick={searchByName}><FilterList style={{ color: "white" }} /></span>
                 </div>
             </div>

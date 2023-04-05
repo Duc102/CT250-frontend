@@ -114,7 +114,7 @@ const ShopOrder = (props) => {
             
             <div>
                 <OrdersContext.Provider value={{orders: orders, setOrders: setOrders, setNotify: setNotify, setConfirmDialog: setConfirmDialog}}>
-                    <ShopOrderList orders={orders} status={orderStatus} />
+                    <ShopOrderList goal="customer-order-list" orders={orders} status={orderStatus} />
                 </OrdersContext.Provider>
             </div>
             <AlertNote notify = {notify} setNotify = {setNotify}/>

@@ -161,7 +161,10 @@ export default function ProductItem(props) {
                 <div style={{minHeight: "150px"}} className="product-text">
                     <div className="product-name">{product.name} <span>{productItem.productConfigurations?.map((config, index)=><Config key={index} value={config.variationOption.value} varOpId={config.variationOption.id}></Config>)}</span></div>
                     <div className='quick-change'>
-                        <div className='d-flex' style={{alignItems: "center"}}><input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={()=>{changePriceInputClass(); finishChange()}} value={price}></input> <span className={priceSpanClass}>{Intl.NumberFormat('en-US', {style: "currency", currency: "USD"}).format(price)}</span> <button className='btn btn-light ms-2' style={{width: "41px", height: "37px", padding: "0px"}} onClick={changePriceInputClass}><EditIcon className="edit-button"/></button></div>
+                        <div className='d-flex' style={{alignItems: "center"}}>
+                            <input className={priceInputClass} ref={pri} onChange={changePrice} onMouseOut={()=>{changePriceInputClass(); finishChange()}} value={price}></input> <span className={priceSpanClass}>{Intl.NumberFormat('en-US', {style: "currency", currency: "USD"}).format(price)}</span> 
+                            <button className='btn btn-light ms-2' style={{width: "41px", height: "37px", padding: "0px"}} onClick={changePriceInputClass}><EditIcon className="edit-button"/></button>
+                        </div>
                         <div className='d-flex mt-1'>
                             <button className="btn btn-light" style={{marginTop: "3px", marginBottom: "3px"}} onClick={()=>changeQtyInStock(1)}>+</button>
                             <div className='qty-input'>

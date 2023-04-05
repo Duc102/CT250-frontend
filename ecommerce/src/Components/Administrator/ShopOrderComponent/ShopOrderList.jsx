@@ -14,9 +14,14 @@ const ShopOrderList = (props) => {
             <table>
                 <thead>
                     <tr>
-                        <th>No. ID</th>
+                        <th>No</th>
+                        <th>Or's ID</th>
                         <th>Date</th>
-                        <th>Customer</th>
+                        {
+                            props.goal === 'customer-order-list'
+                            ?<th>Customer</th>
+                            :<></>
+                        }
                         <th>Status</th>
                         <th>Total</th>
                         <th>Action</th>
@@ -27,7 +32,7 @@ const ShopOrderList = (props) => {
                     {
                         orderList.length > 0?
                         orderList.map((order, index) =>
-                            <ShopOrderLine key={index} order={order} status={props.status} />
+                            <ShopOrderLine goal={props.goal} key={index} no={index+1} order={order} status={props.status} />
                         )
                         :<tr>
                             <td colSpan={6} className="p-2">We don't have any orders like that</td>

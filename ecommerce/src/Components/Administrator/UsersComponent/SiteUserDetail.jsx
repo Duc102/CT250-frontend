@@ -16,10 +16,10 @@ const SiteUserDetail = (props) => {
     const [orders, setOrders] = useState([]);
     const [notify, setNotify] = useState({isOpen: false, message: "", type: "info" });
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle:"", commit: ()=>{}})
+    
     useEffect(() => {
         props.setActbar("Users");
         SiteUserService.getSiteUserById(id).then(res => {
-            console.log(res.data);
             setSiteUser(res.data);
         });
         ShopOrderService.getAllOrderStatus().then(response => {
@@ -43,6 +43,12 @@ const SiteUserDetail = (props) => {
         let country = objAddress.country.name;
         return fa + ", " + sa + ", " + city + ", " + country;
     }
+
+    function processPayment(objPayments){
+        let obj = objPayments.filter(p => p.default);
+        let objPay = obj[0].payment;
+        return objPay.name;        
+    }
     return (
 
         <div className='main-content'>
@@ -63,14 +69,14 @@ const SiteUserDetail = (props) => {
                             </div>
                             <div className='info-field-container text-black'>
                                 <div className='info-field'><LocalPhone className='icon' /><span className='info-title'>Phone number</span> {siteUser.phoneNumber} </div>
-                                <div className='info-field'><CreditCardRounded className='icon' /><span className='info-title'>Payment method</span></div>
+                                <div className='info-field'><CreditCardRounded className='icon' /><span className='info-title'>Payment</span> {processPayment(siteUser.payments)}</div>
                             </div>
                         </div>
                         <div>
                             <h5 className='label text-muted'><ListAltRounded className='icon' /> Ordered </h5>
                             <div>
                                 <OrdersContext.Provider value={{ orders: orders, setOrders: setOrders, setNotify: setNotify, setConfirmDialog: setConfirmDialog }}>
-                                    <ShopOrderList orders={orders} status={orderStatus} />
+                                    <ShopOrderList goal='order-list' orders={orders} status={orderStatus} />
                                 </OrdersContext.Provider>
                             </div>
                         </div>

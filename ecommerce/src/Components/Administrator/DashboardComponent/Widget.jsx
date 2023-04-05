@@ -11,7 +11,7 @@ const Widget = (props) => {
             data = {
                 title: "Users",
                 isMoney: false,
-                link: <NavLink className="widget-link" to="/administrator/orders">See all users</NavLink>,
+                link: <NavLink className="widget-link" to="/administrator/users">See all users</NavLink>,
                 icon: <Person className='widget-icon' />
             };
             break;

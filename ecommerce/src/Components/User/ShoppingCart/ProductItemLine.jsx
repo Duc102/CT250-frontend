@@ -38,7 +38,6 @@ const ProductItemLine = (props) => {
           }
         ShoppingCartService.updateShoppingCartItem(shoppingCartItem).then(response=>{
             console.log("Update Result",response.data);
-            deleteProductItems();
         })
     }
 
