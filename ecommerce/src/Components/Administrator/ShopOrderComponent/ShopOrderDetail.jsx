@@ -161,7 +161,7 @@ const ShopOrderDetail = (props) => {
                             <select className={'status-color-' + order.orderStatus.id} id={"order-status-" + order.id} value={order.orderStatus.id} onChange={(event) => changeOrderStatus(event)}>
                                 {
                                     orderStatus.map((st, index) =>
-                                        disabled(st.id) ? <></> :
+                                        disabled(st.id) ? '' :
                                             <option key={index} value={st.id}>{st.status}</option>
                                     )
                                 }

@@ -42,27 +42,41 @@ const ShopOrderLine = (props) => {
         });
     }
 
-    function disabled(id){
-        if(props.goal === 'view-order-list'){
+    function disabled(id) {
+        if (props.goal === 'view-order-list') {
             let howLong = 0;
             let now = new Date().getTime();
             let past = new Date(order.dateCreate).getTime();
             howLong = now - past;
-            if(howLong < 60*60*24*1000 && id === 9)
+            if (howLong < 60 * 60 * 24 * 1000 && id === 9)
                 return false;
-            else if(id == order.orderStatus.id)
+            else if (id == order.orderStatus.id)
                 return false;
-            else 
+            else
+                return true;
+        }
+        else return false;
+    }
+
+    function disabledUpdate() {
+        if (props.goal === 'view-order-list') {
+            let howLong = 0;
+            let now = new Date().getTime();
+            let past = new Date(order.dateCreate).getTime();
+            howLong = now - past;
+            if (howLong < 60 * 60 * 24 * 1000)
+                return false;
+            else
                 return true;
         }
         else return false;
     }
 
     function goToDetail() {
-        if(props.goal === 'view-order-list')
-            navigate("/userOrderDetail/"+order.id);
+        if (props.goal === 'view-order-list')
+            navigate("/userOrderDetail/" + order.id);
         else
-            navigate("/administrator/orders/"+order.id + "/detail");
+            navigate("/administrator/orders/" + order.id + "/detail");
     }
 
     function deleteShopOder() {
@@ -90,15 +104,15 @@ const ShopOrderLine = (props) => {
             <td style={{ textAlign: "center" }}>{processDate(order.dateCreate)}</td>
             {
                 props.goal === 'customer-order-list'
-                ?<td style={{ textAlign: "center" }}>{order.siteUser.name}</td>
-                :<></>
+                    ? <td style={{ textAlign: "center" }}>{order.siteUser.name}</td>
+                    : <></>
             }
             <td style={{ textAlign: "center" }}>
                 <select className={'status-color-' + order.orderStatus.id} id={"order-status-" + order.id} value={order.orderStatus.id} onChange={(event) => changeOrderStatus(event)}>
                     {
                         props.status.map((st, index) =>
-                            disabled(st.id)?<></>:
-                            <option key={index} value={st.id}>{st.status}</option>
+                            disabled(st.id) ? '' :
+                                <option key={index} value={st.id}>{st.status}</option>
                         )
                     }
                 </select>
@@ -108,10 +122,9 @@ const ShopOrderLine = (props) => {
             </td>
             <td style={{ textAlign: "center" }} className='m-1'>
                 <div>
-                    {
-                        props.goal !== 'view-order-list'?
-                        <button className='btn text-success' title='Confirm' onClick={quickUpdateOrderStatus}><CloudUploadIcon /></button>
-                        :<></>
+                    {                        
+                        disabledUpdate() ? <></>
+                        : <button className='btn text-success' title='Confirm' onClick={quickUpdateOrderStatus}><CloudUploadIcon /></button>
                     }
                     <button className='btn' style={{ color: "#0d6efd" }} title='Info' onClick={goToDetail}><InfoIcon /></button>
                     <button className='btn text-danger' title='Delete' onClick={deleteShopOder}><DeleteIcon /></button>

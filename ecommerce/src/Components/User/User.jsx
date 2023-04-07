@@ -46,7 +46,7 @@ export default function User() {
   return (
     <PayPalScriptProvider options={{'client-id': 'AcTNYTNbAI4aec7RTprvYmE5PDuestOTtOccvQWjL-tfFc91XAXPd8x2zhgUgZz6ftI4crwINV5BPPmD', locale: 'en_US', "disable-funding": 'card'}}>
       <div className="container">
-        <UserContext.Provider value={{ siteUser: siteUser, shoppingCart: shoppingCart, setShoppingCart: setShoppingCart }}>
+        <UserContext.Provider value={{ siteUser: siteUser,setSiteUser: setSiteUser, shoppingCart: shoppingCart, setShoppingCart: setShoppingCart }}>
           <Header />
           <Routes>
             <Route path='/' element={<Body user={siteUser} />}></Route>

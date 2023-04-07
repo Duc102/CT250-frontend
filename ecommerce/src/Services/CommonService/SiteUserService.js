@@ -28,6 +28,10 @@ class SiteUserService {
         return axios.get(SITEUSER_BASE_URL + "/getSiteUserById/"+id);
     }
 
+    updateInfo(siteUser){
+        return axios.post(SITEUSER_BASE_URL + "/updateInfo", siteUser);
+    }
+
     deleteSiteUser(id){
         return axios.delete(SITEUSER_BASE_URL+"/deleteSiteUser/"+id);
     }

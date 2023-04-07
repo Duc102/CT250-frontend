@@ -6,6 +6,7 @@ import ShopOrderList from '../../Administrator/ShopOrderComponent/ShopOrderList'
 import OrdersContext from '../../Administrator/ShopOrderComponent/OrdersContext';
 import AlertNote from '../../Administrator/Notification/AlertNote';
 import ConfirmDialog from '../../Administrator/Notification/ConfirmDialog';
+import SiteUserService from '../../../Services/CommonService/SiteUserService';
 
 const UserInfo = () => {
     const context = useContext(UserContext);
@@ -14,8 +15,8 @@ const UserInfo = () => {
     const [orders, setOrders] = useState([]);
     const [notify, setNotify] = useState({isOpen: false, message: "", type: "info" });
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle:"", commit: ()=>{}})
-    
-    
+    const [modifyMode, setModifyCode] = useState(true);
+
     useEffect(() => {
         if(context.siteUser.id)
             getAllShopOrdersByUserId(context.siteUser.id);
@@ -51,6 +52,9 @@ const UserInfo = () => {
         let value = event.currentTarget.value;
         siteUser[name] = value;
         setSiteUser({ ...siteUser });
+        if (modifyMode) {
+            onModifyMode();
+        }
     }
 
     function changeAddress(event, name) {
@@ -58,12 +62,41 @@ const UserInfo = () => {
         let address = defaultAddress(siteUser.addresses);
         address[name] = value;
         setSiteUser({ ...siteUser });
+        if (modifyMode) {
+            onModifyMode();
+        }
     }
 
     function defaultAddress(addresses) {
         let addressAss = addresses.filter(a => a.default);
         addressAss = addressAss[0];
         return addressAss.address;
+    }
+
+    function updateInfo(){
+        SiteUserService.updateInfo(siteUser).then(res => {
+            console.log(res.data);
+            if(res.data.id){
+                window.localStorage.setItem("siteUser", JSON.stringify(res.data));
+                context.setSiteUser({...res.data});
+            }
+                
+        });
+    }
+
+    function cancel(){
+        setSiteUser({...context.siteUser});
+        if (!modifyMode)
+            offModifyMode();
+    }
+
+    function onModifyMode() {
+        setModifyCode(false);
+    }
+
+
+    function offModifyMode() {
+        setModifyCode(true);
     }
 
     useEffect(() => {
@@ -99,6 +132,12 @@ const UserInfo = () => {
                                 </select>
                             </div>
                         </div>
+
+                        <div className='commit d-flex'>
+                            <button className='btn btn-success flex-grow-1 m-1' style={{maxWidth: "150px"}} onClick={updateInfo} disabled={modifyMode}>Update</button>
+                            <button className='btn btn-dark border border-danger flex-grow-1 m-1 me-0' style={{maxWidth: "150px"}} disabled={modifyMode} onClick={cancel}>Cancel</button>
+                        </div>
+
                         <div>
                             <h5 className='label text-muted'><ListAltRounded className='icon' />Order History</h5>
                             <div>

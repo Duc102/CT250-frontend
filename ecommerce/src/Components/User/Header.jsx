@@ -23,6 +23,7 @@ export default function Header() {
   const navigate = useNavigate();
   const shoppingCart = context.shoppingCart;
   const siteUser = context.siteUser;
+  const setSiteUser = context.setSiteUser;
 
   const submit = (event) => {
     event.preventDefault();
@@ -42,6 +43,7 @@ export default function Header() {
 
   function logout(){
     localStorage.clear();
+    setSiteUser({id: 0, name: "Guest"});
     goTo("/login");
   }
 
