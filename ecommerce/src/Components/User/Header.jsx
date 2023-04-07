@@ -41,6 +41,11 @@ export default function Header() {
     navigate(link);
   }
 
+  function search(){
+    let value = document.getElementById("search-value").value;
+    goTo("/search/0/"+value);
+  }
+
   function logout(){
     localStorage.clear();
     setSiteUser({id: 0, name: "Guest"});
@@ -78,8 +83,8 @@ export default function Header() {
             <NavLink to="/"><img src={logo} id="logo"></img></NavLink>
             <div className="d-flex justify-content-end flex-fill">
               <form className='d-flex input-group' role="search" onSubmit={submit}>
-                <input className='form-control ' type='search' placeholder="Tìm kiếm" aria-label="Search"></input>
-                <button className='btn btn-dark' type="submit"><SearchIcon /></button>
+                <input id="search-value" className='form-control ' type='search' placeholder="Search" aria-label="Search"></input>
+                <button className='btn btn-dark' type="submit" onClick={search}><SearchIcon /></button>
               </form>
             </div>
             <NavLink to="/shoppingCart" className="btn btn-dark ms-2" style={{ position: "relative" }}><ShoppingCartIcon /> <span style={{ position: "absolute", top: "-12px", right: "-5px", borderRadius: "50%", width: "25px", height: "24px", display: "inline-block", backgroundColor: "red" }}>{howManyProductItems()}</span></NavLink>

@@ -5,12 +5,13 @@ import { Col, Row } from "react-bootstrap"
 
 import ProductCategoryService from '../../Services/CommonService/ProductCategoryService';
 import { BluetoothSearching, Cable, Computer, Dashboard, Headset, Keyboard, Memory, Mouse, Storage } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 export default function SideBar() {
     const [key, setKey] = useState('first');
     const [categoryZero, setCategoryZero] = useState([])
     const [childOfCategorySelected, setChildOfCategorySelected] = useState([]);
-    
+    const navigate = useNavigate();
     useEffect(() => {
         ProductCategoryService.getProductCategoryZeroLevel().then(res => {
             console.log(res.data);
@@ -45,11 +46,15 @@ export default function SideBar() {
         return (<Dashboard />)
     }
 
+    function goTo(category){
+        navigate("/search/"+category);
+    }
+
     return (
         <div onMouseLeave={() => setKey("")} className="ta-menu mt-1">
             <Tab.Container activeKey={key}>
                 <Row>
-                    <Col className='bg-white border rounded p-1 col-md-auto'>
+                    <Col className='bg-white border rounded p-1 col-12'>
                         <Nav variant='pills' className='ta-menu'>
                             {
                                 categoryZero.map((cat, index) =>
@@ -61,15 +66,15 @@ export default function SideBar() {
                         </Nav>
                     </Col>
 
-                    <Col className='bg-dark rounded hidden'>
-                        <Tab.Content className="mt-2 mb-2 bg-dark">
+                    <Col className='bg-dark rounded hidden mt-1 col-12'>
+                        <Tab.Content className="rounded bg-dark">
                             {
                                 categoryZero.map((cat, index) =>
                                     <Tab.Pane key={index} eventKey={"cat_" + cat.id}>
                                         <Row className='ms-2'>
                                             {
                                                 childOfCategorySelected.map((cc, index) =>
-                                                    <Col key={index} className='first-child-category'>
+                                                    <Col key={index} className='first-child-category' onClick={()=>goTo(cc.id)}>
                                                         <div className='btn btn-light' style={{ width: "100%", margin: "5px" }}>{processIcon(cc.id)} {cc.categoryName}</div>
                                                     </Col>)
                                             }
