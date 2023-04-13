@@ -120,7 +120,7 @@ const ShopOrderLine = (props) => {
             <td className='price-color'>
                 {Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(order.orderTotal)}
             </td>
-            <td style={{ textAlign: "center" }} className='m-1'>
+            <td style={{ textAlign: "center", whiteSpace: "nowrap" }} className='m-1'>
                 <div>
                     {                        
                         disabledUpdate() ? <></>

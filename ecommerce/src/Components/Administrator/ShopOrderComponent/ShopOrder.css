@@ -140,6 +140,10 @@
     border-bottom: 1px solid white;
 }
 
+.order-list table tbody tr td{
+    max-width: 200px;
+    white-space: normal;
+}
 
 .order-list table thead tr th:first-child {
     border-top-left-radius: 6px;

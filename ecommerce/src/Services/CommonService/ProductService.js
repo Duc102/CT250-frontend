@@ -76,6 +76,9 @@ class ProductService {
     getProductByConfiguration(conditions){
         return axios.post(PRODUCT_BASE_URL + "/conditions", conditions);
     }
+    getProductsByName(name) {
+        return axios.get(PRODUCT_BASE_URL+"/search/"+name)
+    }
 }
 
 export default new ProductService();

@@ -13,6 +13,7 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
     const VarOp = (props) => {
         return (
           <>
+            <option value={0}>No</option>
            {props.otherOptions.map((v, index)=><option key={index} value={v.id}>{v.value}</option>)} 
           </>
         )
@@ -25,6 +26,7 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
       const navigate = useNavigate();
       const goToTheProductItem = () =>{
         navigate("/administrator/products/productItemsDetail/" + props.productItem.id);
+        window.scrollTo(0, 0);
       }
       return(
         <>

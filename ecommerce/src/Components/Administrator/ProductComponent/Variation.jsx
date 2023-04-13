@@ -35,15 +35,16 @@ const Variation = (props) => {
     if(props.init !== undefined){
       variations.forEach((variation)=>{
         let varSel = document.getElementById(props.goal+"-"+variation.id);
-        if(props.init[variation.id] !== undefined)
+        if(props.init[variation.id] !== undefined){
           varSel.value = props.init[variation.id];
+        }
       })
     } else
     variations.forEach((variation)=>{
       let varSel = document.getElementById(props.goal+"-"+variation.id);
         varSel.value = 0;
     })
-  },[props.reset])
+  },[props.reset, props.init])
 
   function selectVariation(){
     if(props.goal.includes("modify") || props.goal.includes("new-product")) {

@@ -30,7 +30,7 @@ const ShopOrderDetail = (props) => {
     const [notify, setNotify] = useState({ isOpen: false, message: "", type: "info" });
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "", commit: () => { } });
     useEffect(() => {
-        if (props.setAction)
+        if (props.setActbar)
             props.setActbar("Orders");
         ShopOrderService.getShopOrderById(id).then(response => {
             setOrder(response.data);

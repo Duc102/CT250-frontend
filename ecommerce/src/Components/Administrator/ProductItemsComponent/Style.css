@@ -368,6 +368,12 @@ input.hidden {
     display: flex;
     align-items: center;
     margin-top: 1rem;
+    overflow: scroll;
+    max-width: 600px;
+}
+
+.otherConfig .other-item::-webkit-scrollbar{
+    display: none;
 }
 
 

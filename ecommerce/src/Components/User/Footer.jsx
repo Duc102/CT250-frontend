@@ -11,7 +11,7 @@ import linkedinIcon from './Images/LinkedIn.png'
 
 const Footer = () => {
     return (
-        <footer className='container rounded border border-dark p-1'>
+        <footer className='container rounded border border-dark p-1' style={{minWidth: "515px"}}>
             <div className='row'>
                 <div className='col-6 col-sm'>
                     <h5 className='text-center'>Application</h5>

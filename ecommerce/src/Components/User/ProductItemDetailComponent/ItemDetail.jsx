@@ -36,30 +36,32 @@ const ItemDetail = () => {
     const shoppingCart = context.shoppingCart;
     const setShoppingCart = context.setShoppingCart;
 
-    function buy(){
+    function buy() {
         addShoppingCart();
         navigate("/shoppingCart")
     }
 
-    function addShoppingCart(){
+    function addShoppingCart() {
         let shoppingCartItem = {
             id: {
-              shoppingCartId: shoppingCart.id,
-              productItemId: productItem.id
+                shoppingCartId: shoppingCart.id,
+                productItemId: productItem.id
             },
             productItem: productItem,
             qty: qty
-          }
+        }
         let ss = shoppingCart.shoppingCartItems.filter(it => it.id.productItemId === productItem.id);
-        if(ss.length > 0){
+        if (ss.length > 0) {
             ss[0].qty += qty;
-            ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response=>{
-                setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
+            ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response => {
+                setShoppingCart({ ...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems] })
             })
         } else
-            ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response=>{
-                setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
-            })
+            if (productItem.qtyInStock !== 0) {
+                ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response => {
+                    setShoppingCart({ ...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem] })
+                })
+            }
     }
 
     const navigate = useNavigate();

@@ -15,6 +15,9 @@ class ProductCategoryService {
     getChildrenOfProductCategory(id){
         return axios.get(PRODUCT_CATEGORY_BASE_URL + "/" + id + "/children")
     }
+    findProductCategoryByName(name) {
+        return axios.get(PRODUCT_CATEGORY_BASE_URL+"/search/"+name)
+    }
 }
 
 export default new ProductCategoryService();

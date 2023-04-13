@@ -65,8 +65,11 @@ export default function ProductItem(props) {
                 qtyInStock: qtyInStock
             }
         })
-        ProductService.updateProductItem({...productItem, price: price, qtyInStock: qtyInStock});
-        props.setNotify({isOpen: true, message: "Update successful!", type: "success"});
+        ProductService.updateProductItem({...productItem, price: price, qtyInStock: qtyInStock}).then(res => {
+            props.productItem.price = price;
+            props.productItem.qtyInStock = qtyInStock;
+            props.setNotify({isOpen: true, message: "Update successful!", type: "success"});
+        });
         if(!modifyMode)
             offModifyMode();
     }

@@ -77,7 +77,7 @@ export default function Header() {
           `
         }
       </style>
-      <header className='container sticky-top rounded-bottom border border-dark'>
+      <header className='container sticky-top rounded-bottom border border-dark' style={{minWidth: "515px"}}>
         <nav className='navbar navbar-expand-sm'>
           <div className="container-fluid flex-nowrap">
             <NavLink to="/"><img src={logo} id="logo"></img></NavLink>

@@ -41,40 +41,47 @@ const ProductItem = (props) => {
         navigate("/productItemDetail/" + props.productItem.id);
     }
 
-    function buy(){
+    function buy() {
         addShoppingCart();
         navigate("/shoppingCart")
     }
 
-    function addShoppingCart(){
+    function addShoppingCart() {
         let shoppingCartItem = {
             id: {
-              shoppingCartId: shoppingCart.id,
-              productItemId: props.productItem.id
+                shoppingCartId: shoppingCart.id,
+                productItemId: props.productItem.id
             },
             productItem: props.productItem,
             qty: 1
-          }
-        let ss = shoppingCart.shoppingCartItems.filter(it => it.id.productItemId === props.productItem.id);
-        if(ss.length > 0){
-            ss[0].qty += 1;
-            ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response=>{
-                // setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
-            })
-            setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
-        } else{
-            ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response=>{
-                // setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
-            })
-            setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
         }
-            
+        let ss = shoppingCart.shoppingCartItems.filter(it => it.id.productItemId === props.productItem.id);
+        if (ss.length > 0) {
+            if (props.productItem.qtyInStock === ss[0].qty) {
+                window.alert("Number of product item that can buy is: " + props.productItem.qtyInStock);
+            } else {
+                ss[0].qty += 1;
+                ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response => {
+                    // setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems]})
+                })
+                setShoppingCart({ ...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems] })
+            }
+
+        } else {
+            if (props.productItem.qtyInStock !== 0) {
+                ShoppingCartService.addShoppingCartItem(shoppingCartItem).then(response => {
+                    // setShoppingCart({...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem]})
+                })
+                setShoppingCart({ ...shoppingCart, shoppingCartItems: [...shoppingCart.shoppingCartItems, shoppingCartItem] })
+            }
+        }
+
     }
 
     if (product)
         return (
-            <div style={{minWidth: "300px",}}>
-                <div className='product-list-info mt-1 mb-1' style={{marginLeft: "auto", marginRight: "auto"}}>
+            <div style={{ minWidth: "300px", }}>
+                <div className='product-list-info mt-1 mb-1' style={{ marginLeft: "auto", marginRight: "auto" }}>
                     <div style={{ textAlign: "center", background: "white" }}>
                         <img src={props.productItem.productImages[0].url} alt="Product Image" className="product-image" onClick={goToDetail}></img>
                     </div>

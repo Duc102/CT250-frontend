@@ -18,7 +18,7 @@ import { findVariationOptionFromVariations } from './Execute';
 import "./Style.css"
 import ProductImage from './ProductImage';
 import UploadFileService from '../../../Services/CommonService/UploadFileService';
-export default function ProductItemsDetail() {
+export default function ProductItemsDetail(props) {
   const { id } = useParams();
   const [categoryId, setCategoryId] = useState(0);
   const [variationOfCategory, setVariationOfCategory] = useState([]);
@@ -50,6 +50,7 @@ export default function ProductItemsDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    props.setActbar("Products");
     let product, productItem;
     // Get product item detail
     ProductService.getProductItemsDetail(id).then((response) => {
@@ -95,7 +96,8 @@ export default function ProductItemsDetail() {
           //   3 (=>variation id): 48 (=>variation option id),
           //   ...
           // }
-        })
+          setReset(reset + 1);
+        });
       })
       // set current variation selected
       setSelectedOtherVariation(VAO);
@@ -131,6 +133,7 @@ export default function ProductItemsDetail() {
         setOtherVariations(vars); //variation type
       })
     });
+
   }, [id])
 
   function selectAnotherProductItem() {
@@ -367,7 +370,7 @@ export default function ProductItemsDetail() {
             </div>
             <button className='btn btn-light qty' style={{ margin: "3px", width: "40px" }} onClick={() => changeQtyInStock(-1)}>-</button>
           </div>
-          <Variation goal="modify-new-config" categoryId={categoryId} setConditions={changeConfig} init={modifyConfig} reset={reset}></Variation>
+          <Variation goal="modify-new-config" categoryId={categoryId} setConditions={changeConfig} init={{...modifyConfig}} reset={reset}></Variation>
         </div>
       </div>
 

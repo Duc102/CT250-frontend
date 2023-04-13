@@ -47,7 +47,7 @@ export default function SideBar() {
     }
 
     function goTo(category){
-        navigate("/search/"+category);
+        navigate("/search/0/"+category);
     }
 
     return (
@@ -74,7 +74,7 @@ export default function SideBar() {
                                         <Row className='ms-2'>
                                             {
                                                 childOfCategorySelected.map((cc, index) =>
-                                                    <Col key={index} className='first-child-category' onClick={()=>goTo(cc.id)}>
+                                                    <Col key={index} className='first-child-category' onClick={()=>goTo(cc.categoryName)}>
                                                         <div className='btn btn-light' style={{ width: "100%", margin: "5px" }}>{processIcon(cc.id)} {cc.categoryName}</div>
                                                     </Col>)
                                             }

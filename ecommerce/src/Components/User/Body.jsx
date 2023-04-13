@@ -36,7 +36,7 @@ export default function Body(props) {
     }
 
     return (
-        <Container className='border border-dark rounded p-1 mt-1 mb-1'>
+        <Container className='border border-dark rounded p-1 mt-1 mb-1' style={{minWidth: "515px"}}>
             <Advertisement></Advertisement>
             <SideBar></SideBar>
             <LazyComponent title="Top Selling Product" productItems={topTens}></LazyComponent>
