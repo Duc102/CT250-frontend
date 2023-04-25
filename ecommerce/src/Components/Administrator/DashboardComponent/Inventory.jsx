@@ -3,19 +3,28 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
 import "./Dashboard.css"
 import DashboardService from '../../../Services/CommonService/DashboardService';
+import ProductService from "../../../Services/CommonService/ProductService"
+import { NavLink } from 'react-router-dom';
+import InfoIcon from '@mui/icons-material/Info';
 const Inventory = () => {
 
     const [data, setData] = useState([{ name: 'Sold', value: 50 },
     { name: 'Inventory', value: 50 }]);
 
+    const [productItems, setProductItems] = useState([]);
+
     useEffect(() => {
         DashboardService.getInventroy().then(res => {
-            console.log(res.data);
             let d = [];
             d.push({ name: "Sold", value: res.data.sold });
             d.push({ name: "Inventory", value: res.data.inventory });
             setData(d);
         });
+
+        ProductService.getProductItemsWhereQtyNearestZero().then(res => {
+            setProductItems(res.data);
+            console.log(res.data);
+        })
     }, []);
 
     const COLORS = ['rgb(0, 255, 0)', 'red'];
@@ -86,6 +95,12 @@ const Inventory = () => {
                         </table>
                     </div>
                 </div>
+
+
+                
+
+
+
             </div>
         </div>
     );

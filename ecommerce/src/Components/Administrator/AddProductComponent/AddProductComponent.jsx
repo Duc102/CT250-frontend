@@ -22,12 +22,13 @@ import { findVariationOptionFromVariations } from "../ProductItemsComponent/Exec
 
 import "./AddProductComponent.css"
 import { Delete } from '@mui/icons-material';
+import AlertNote from '../Notification/AlertNote';
 
 export default function AddProductComponent(props) {
     const [zeroCategory, setZeroCategory] = useState([]);
     const [category, setCategory] = useState(0);
     const [variationOfCategory, setVariationOfCategory] = useState([]);
-    const [product, setProduct] = useState({ id: 0, name: "New Product Name" });
+    const [product, setProduct] = useState({ id: 0, name: "" });
     const [numberProIt, setNumberProIt] = useState(1);
     const fakeProId = useRef(0);
     const [modifyMode, setModifyCode] = useState(true);
@@ -37,7 +38,7 @@ export default function AddProductComponent(props) {
             list.push({
                 id: fakeProId.current,
                 price: 0,
-                sku: "KSU00001",
+                sku: "KSU000" + fakeProId.current + "" + i,
                 qtyInStock: 0,
                 conditions: {},
                 productConfigurations: [],
@@ -50,16 +51,18 @@ export default function AddProductComponent(props) {
     });
 
 
-    const [description, setDescription] = useState({ops:[{insert: "\n"}]});
+    const [description, setDescription] = useState({ ops: [{ insert: "\n" }] });
     const [reset, setReset] = useState(0);
+
+    const [notify, setNotify] = useState({ isOpen: false, message: "", type: "info" });
 
 
     function refresh() {
         setCategory(0);
         setVariationOfCategory([]);
-        setProduct({ id: 0, name: "New Product Name" });
+        setProduct({ id: 0, name: "" });
         setNumberProIt(1);
-        setDescription({ops:[{insert: "\n"}]});
+        setDescription({ ops: [{ insert: "\n" }] });
         fakeProId.current = 0;
         setProductItems(() => {
             let list = [];
@@ -67,7 +70,7 @@ export default function AddProductComponent(props) {
                 list.push({
                     id: 0,
                     price: 0,
-                    sku: "KSU00001",
+                    sku: "KSU00000",
                     qtyInStock: 0,
                     conditions: {},
                     productConfigurations: [],
@@ -187,7 +190,6 @@ export default function AddProductComponent(props) {
         setProductItems(processAddProIt());
         if (modifyMode)
             onModifyMode();
-        // fakeProId.current = fakeProId.current + 1;
     }
     function processAddProIt() {
         let proItId = fakeProId.current;
@@ -195,7 +197,7 @@ export default function AddProductComponent(props) {
         return [...productItems, {
             id: proItId,
             price: 0,
-            sku: "KSU0000001",
+            sku: "KSU000" + fakeProId.current + "" + numberProIt,
             qtyInStock: 0,
             conditions: {},
             productConfigurations: [],
@@ -310,31 +312,42 @@ export default function AddProductComponent(props) {
 
 
     function save() {
-        let newProduct = {
-            ...product,
-            productCategory: {
-                id: category
-            }
-        }
-        ProductService.createProduct(newProduct).then((response) => {
-            let createdProduct = response.data;
-            preprocessDescription(createdProduct.id);
-            UploadFileService.uploadJsonFile("description.json", "/Products/Descriptions/" + createdProduct.id, description).then(response => {
-                console.log("This is description: ", response.data);
-            });
-            ProductService.createProductItem(createdProduct.id, productItems).then(response => {
-                let createdProductItems = response.data;
-                let preProIts = preprocessUpdate(createdProduct, productItems, createdProductItems);
-                for (let i = 0; i < preProIts.length; i++) {
-                    createdProductItems[i].productImages = preProIts[i].existedImages;
-                    createdProductItems[i].productConfigurations = preProIts[i].productConfigurations;
+        if (product.name !== "") {
+            if (Number(category) !== 0) {
+                setNotify({ isOpen: true, message: "Add the new product successful!", type: "success" });
+                let newProduct = {
+                    ...product,
+                    productCategory: {
+                        id: category
+                    }
                 }
-                ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
-                    let first = response.data[0].id;
-                    navigate("/administrator/products/productItemsDetail/" + first);
-                })
-            })
-        });
+                ProductService.createProduct(newProduct).then((response) => {
+                    let createdProduct = response.data;
+                    preprocessDescription(createdProduct.id);
+                    UploadFileService.uploadJsonFile("description.json", "/Products/Descriptions/" + createdProduct.id, description).then(response => {
+                        console.log("This is description: ", response.data);
+                    });
+                    ProductService.createProductItem(createdProduct.id, productItems).then(response => {
+                        let createdProductItems = response.data;
+                        let preProIts = preprocessUpdate(createdProduct, productItems, createdProductItems);
+                        for (let i = 0; i < preProIts.length; i++) {
+                            createdProductItems[i].productImages = preProIts[i].existedImages;
+                            createdProductItems[i].productConfigurations = preProIts[i].productConfigurations;
+                        }
+                        ProductService.updateProductImagesNewProductItem(createdProductItems).then(response => {
+                            let first = response.data[0].id;
+                            navigate("/administrator/products/productItemsDetail/" + first);
+                        })
+                    })
+                });
+            } else {
+                setNotify({ isOpen: true, message: "Category is not 0", type: "warning" });
+            }
+        } else {
+            setNotify({ isOpen: true, message: "Product must be named", type: "warning" });
+        }
+
+
     }
 
     const navigate = useNavigate();
@@ -407,14 +420,15 @@ export default function AddProductComponent(props) {
             </div>
             <h5 className='label text-muted'><DriveFileRenameOutlineIcon className='icon' /> Description</h5>
             <div className='description'>
-                <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} init={"Description"}/>
+                <Editor product={product} setDescription={setDescription} reset={reset} onModifyMode={onModifyMode} offModifyMode={offModifyMode} init={"Description"} />
             </div>
             <div className='commit d-flex'>
                 <div>
-                    <button className='btn btn-dark border border-danger flex-grow-1 m-1' onClick={save} disabled={modifyMode}>Save</button>
+                    <button className='btn btn-success border border-success flex-grow-1 m-1' onClick={save} disabled={modifyMode}>Save</button>
                     <button className='btn btn-dark border border-danger flex-grow-1 m-1 me-0' onClick={cancel} disabled={modifyMode}>Cancel</button>
                 </div>
             </div>
+            <AlertNote notify={notify} setNotify={setNotify} />
         </div>
     )
 }

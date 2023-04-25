@@ -38,7 +38,7 @@ export default function AddProductItem(props) {
             list.push({
                 id: fakeProId.current,
                 price: 0,
-                sku: "KSU0000001",
+                sku: "KSU000"+ fakeProId.current + "" + i,
                 qtyInStock: 0,
                 conditions: {},
                 productConfigurations: [],
@@ -66,7 +66,7 @@ export default function AddProductItem(props) {
                 list.push({
                     id: 0,
                     price: 0,
-                    sku: "KSU0000001",
+                    sku: "KSU00000",
                     qtyInStock: 0,
                     conditions: {},
                     productConfigurations: [],
@@ -116,7 +116,6 @@ export default function AddProductItem(props) {
             setCategory(product.productCategory.id);
             let output = [];
             openStree(product.productCategory, output);
-            console.log(output);
             setTreeCategory(output);
         })
     }, [])

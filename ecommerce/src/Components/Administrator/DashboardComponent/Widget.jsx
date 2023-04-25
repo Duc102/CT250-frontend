@@ -38,7 +38,7 @@ const Widget = (props) => {
         <div className='widget'>
             <div className='left'>
                 <span className='widget-title'>{data.title}</span>
-                <span className={data.isMoney?"counter text-success":"counter"}>
+                <span name={props.goal} className={data.isMoney?"counter text-success":"counter"}>
                     {
                         data.isMoney?
                         Intl.NumberFormat('en-US', { style: "currency", currency: "USD" }).format(props.counter)

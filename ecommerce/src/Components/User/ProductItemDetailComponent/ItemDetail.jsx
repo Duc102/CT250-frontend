@@ -14,6 +14,7 @@ import ProductImage from './ProductImage';
 import OtherProductItem from './OtherProductItem';
 import Description from './Description';
 import "./ItemDetail.css"
+import { DescriptionRounded } from '@mui/icons-material';
 
 const ItemDetail = () => {
     const { id } = useParams();
@@ -216,6 +217,7 @@ const ItemDetail = () => {
                         </div>
                     </div>
                 </div>
+                <h5 className='label text-muted'><DescriptionRounded className='icon' />Description</h5>
                 <Description product={product}></Description>
             </div>
         </Container>

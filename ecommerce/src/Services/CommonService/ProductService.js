@@ -79,6 +79,10 @@ class ProductService {
     getProductsByName(name) {
         return axios.get(PRODUCT_BASE_URL+"/search/"+name)
     }
+
+    getProductItemsWhereQtyNearestZero(){
+        return axios.get(PRODUCT_BASE_URL +"/productItemsWhereQtyNearestZero");
+    }
 }
 
 export default new ProductService();

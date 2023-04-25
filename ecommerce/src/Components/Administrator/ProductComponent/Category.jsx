@@ -46,7 +46,7 @@ const Category = (props) => {
     function selectCategory() {
         let sel = ref.current.value;
         setSelected(sel);
-        if(sel!==0){
+        if(Number(sel) !== 0){
             props.setCategoryId(sel);
         } else {
             props.setCategoryId(parent);

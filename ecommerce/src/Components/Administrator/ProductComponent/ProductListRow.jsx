@@ -31,7 +31,7 @@ const ProductListRow = (props) => {
     }, [props, haveChange])
     return (
         <>  
-            <h5 className='label text-muted'><Functions className='icon' />Result: {products.length} item(s)</h5>
+            <h5 className='label text-muted'><Functions className='icon' />Result: <span name='result' className="ms-1 me-1">{products.length}</span> item(s)</h5>
             <div className="row justify-content-center">
                 {
                     products.length > 0 ?

@@ -1,7 +1,7 @@
 import { Facebook, Google, LoginRounded, RepeatOneSharp, VisibilityOff } from '@mui/icons-material';
 import React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import SiteUserService from '../../../Services/CommonService/SiteUserService';
 const Login = (props) => {
 
@@ -33,8 +33,12 @@ const Login = (props) => {
             let result = response.data;
             if (result) {
                 props.exe({ ...response.data })
-                navigate("/")
-            }
+                if(response.data.name === "Link")
+                    navigate("/administrator");
+                else 
+                    navigate("/")
+            } else 
+                alert("Email or password is incorrect!");
         });
     };
 
@@ -47,7 +51,7 @@ const Login = (props) => {
                 <div>
                     <h2 className="title-page text-center"><span><LoginRounded className='icon' />Welcome to <span style={{ whiteSpace: 'nowrap', padding: "0px", color: 'red', fontWeight: "bold" }}>Tech Accessories</span></span></h2>
                 </div>
-                <div className="text-end text-muted">New member? <a className="text-decoration-none" href="register.html">Sing up</a> here</div>
+                <div className="text-end text-muted">New member? <NavLink className="text-decoration-none" to="/register">Sing up</NavLink> here</div>
                 <article className="row pt-4 pb-4">
                     <div className="col-12 col-sm-6 mb-3">
                         <form className="w-100">
